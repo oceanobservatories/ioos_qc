@@ -1,0 +1,355 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ioos_qc package &#8212; ioos_qc 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="ioos_qc" href="modules.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ioos_qc">
+<span id="ioos-qc-package"></span><h1>ioos_qc package<a class="headerlink" href="#module-ioos_qc" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-ioos_qc.gliders">
+<span id="ioos-qc-gliders-module"></span><h2>ioos_qc.gliders module<a class="headerlink" href="#module-ioos_qc.gliders" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ioos_qc.gliders.pressure_check">
+<code class="descclassname">ioos_qc.gliders.</code><code class="descname">pressure_check</code><span class="sig-paren">(</span><em>pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/gliders.html#pressure_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.gliders.pressure_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array of flag values where each input is flagged with SUSPECT if
+it does not monotonically increase</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pressure</strong> (<em>numpy.ndarray</em>) – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ioos_qc.qartod">
+<span id="ioos-qc-qartod-module"></span><h2>ioos_qc.qartod module<a class="headerlink" href="#module-ioos_qc.qartod" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ioos_qc.qartod.ClimatologyConfig">
+<em class="property">class </em><code class="descclassname">ioos_qc.qartod.</code><code class="descname">ClimatologyConfig</code><span class="sig-paren">(</span><em>members=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="ioos_qc.qartod.ClimatologyConfig.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>tspan</em>, <em>vspan</em>, <em>zspan=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.add" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.ClimatologyConfig.mem">
+<code class="descname">mem</code><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.mem" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">window</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.ClimatologyConfig.members">
+<code class="descname">members</code><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.members" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ioos_qc.qartod.ClimatologyConfig.values">
+<code class="descname">values</code><span class="sig-paren">(</span><em>tind</em>, <em>zind=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ioos_qc.qartod.QartodFlags">
+<em class="property">class </em><code class="descclassname">ioos_qc.qartod.</code><code class="descname">QartodFlags</code><a class="reference internal" href="../_modules/ioos_qc/qartod.html#QartodFlags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.QartodFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Primary flags for QARTOD.</p>
+<dl class="attribute">
+<dt id="ioos_qc.qartod.QartodFlags.FAIL">
+<code class="descname">FAIL</code><em class="property"> = 4</em><a class="headerlink" href="#ioos_qc.qartod.QartodFlags.FAIL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.QartodFlags.GOOD">
+<code class="descname">GOOD</code><em class="property"> = 1</em><a class="headerlink" href="#ioos_qc.qartod.QartodFlags.GOOD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.QartodFlags.MISSING">
+<code class="descname">MISSING</code><em class="property"> = 9</em><a class="headerlink" href="#ioos_qc.qartod.QartodFlags.MISSING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.QartodFlags.SUSPECT">
+<code class="descname">SUSPECT</code><em class="property"> = 3</em><a class="headerlink" href="#ioos_qc.qartod.QartodFlags.SUSPECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.QartodFlags.UNKNOWN">
+<code class="descname">UNKNOWN</code><em class="property"> = 2</em><a class="headerlink" href="#ioos_qc.qartod.QartodFlags.UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.attenuated_signal_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">attenuated_signal_test</code><span class="sig-paren">(</span><em>inp</em>, <em>threshold</em>, <em>check_type='std'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#attenuated_signal_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.attenuated_signal_test" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.climatology_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">climatology_test</code><span class="sig-paren">(</span><em>config</em>, <em>tinp</em>, <em>vinp</em>, <em>zinp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#climatology_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.climatology_test" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.flat_line_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">flat_line_test</code><span class="sig-paren">(</span><em>inp</em>, <em>counts</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.gross_range_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">gross_range_test</code><span class="sig-paren">(</span><em>inp</em>, <em>sensor_span</em>, <em>user_span=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#gross_range_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.gross_range_test" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.location_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">location_test</code><span class="sig-paren">(</span><em>lon</em>, <em>lat</em>, <em>bbox=None</em>, <em>range_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#location_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.location_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that longitude and latitude are within reasonable bounds defaulting
+to lon = [-180, 180] and lat = [-90, 90].  Optionally, check for a maximum
+range parameter in great circle distance defaulting to meters which can
+also use a unit from the quantities library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lon</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Decimal</span></code>]]) – Longitude expressed as a floating point value</li>
+<li><strong>lat</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Decimal</span></code>]]) – Latitude expressed as a floating point value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Bbox:</th><td class="field-body"><p class="first">A length 4 array expressed in (minx, miny, maxx, maxy)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Range_max:</th><td class="field-body"><p class="first">Maximum range expressed in terms of geodesic curve distance.  Defaults to units of meters</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.qartod_compare">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">qartod_compare</code><span class="sig-paren">(</span><em>vectors</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#qartod_compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.qartod_compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an array of flags that represent the aggregate of all the vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Decimal</span></code>]]]) – An array of arrays of flags of uniform length</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array of aggregated flag data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.rate_of_change_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">rate_of_change_test</code><span class="sig-paren">(</span><em>inp</em>, <em>std_deviation</em>, <em>num_deviations=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#rate_of_change_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.rate_of_change_test" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ioos_qc.qartod.span">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">span</code><a class="headerlink" href="#ioos_qc.qartod.span" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Span</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.qartod.spike_test">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">spike_test</code><span class="sig-paren">(</span><em>inp</em>, <em>thresholds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#spike_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.spike_test" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ioos_qc.utils">
+<span id="ioos-qc-utils-module"></span><h2>ioos_qc.utils module<a class="headerlink" href="#module-ioos_qc.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="ioos_qc.utils.check_timestamps">
+<code class="descclassname">ioos_qc.utils.</code><code class="descname">check_timestamps</code><span class="sig-paren">(</span><em>times</em>, <em>max_time_interval=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#check_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.check_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the times supplied are in monotonically increasing
+chronological order, and optionally that time intervals between
+measurements do not exceed a value <cite>max_time_interval</cite>.  Note that this is
+not a QARTOD test, but rather a utility test to make sure times are in the
+proper order and optionally do not have large gaps prior to processing the
+data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.utils.isfixedlength">
+<code class="descclassname">ioos_qc.utils.</code><code class="descname">isfixedlength</code><span class="sig-paren">(</span><em>lst</em>, <em>length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#isfixedlength"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.isfixedlength" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.utils.isnan">
+<code class="descclassname">ioos_qc.utils.</code><code class="descname">isnan</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#isnan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.isnan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ioos_qc package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-ioos_qc.gliders">ioos_qc.gliders module</a></li>
+<li><a class="reference internal" href="#module-ioos_qc.qartod">ioos_qc.qartod module</a></li>
+<li><a class="reference internal" href="#module-ioos_qc.utils">ioos_qc.utils module</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">ioos_qc</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">ioos_qc</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, IOOS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

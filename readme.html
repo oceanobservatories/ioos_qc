@@ -1,0 +1,132 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>IOOS QC &#8212; ioos_qc 0.0.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to the IOOS QC documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ioos-qc">
+<h1>IOOS QC<a class="headerlink" href="#ioos-qc" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://travis-ci.org/axiom-data-science/ioos_qc"><img alt="build_status" src="https://travis-ci.org/axiom-data-science/ioos_qc.svg?branch=master" /></a>
+<p>Collection of utilities, scripts and tests to assist in automated
+quality assurance and quality control for oceanographic datasets and
+observing systems.</p>
+<p>Please see our project documentation <a class="reference external" href="https://ioos.github.io/qartod/">QARTOD Documentation</a></p>
+<div class="section" id="available-tests">
+<h2>Available Tests<a class="headerlink" href="#available-tests" title="Permalink to this headline">¶</a></h2>
+<p>Current tests refer to the <a class="reference external" href="https://ioos.noaa.gov/project/qartod/">QARTOD manuals</a>
+Current tests are taken from the Wind, Water Level, Currents, In-Situ Temperature and Salinity QARTOD Manuals</p>
+<p>Currently implemented tests are:</p>
+<ul class="simple">
+<li>Gross Range Test</li>
+<li>Attenuated Signal Test</li>
+<li>Flat Line Test</li>
+<li>Rate of Change Test</li>
+</ul>
+</div>
+<div class="section" id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>To run tests, import the QARTOD qc module:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc</span> <span class="k">import</span> <span class="n">qartod</span>
+</pre></div>
+</div>
+<p>Refer to the Sphinx generated documentation for information on how to use the
+various QARTOD tests.</p>
+</div>
+<div class="section" id="caveats-known-limitations">
+<h2>Caveats/Known Limitations<a class="headerlink" href="#caveats-known-limitations" title="Permalink to this headline">¶</a></h2>
+<p>Currently, most methods in the QARTOD assume monotonically increasing,
+time series data with evenly spaced intervals.  If there is an irregular or
+large gap in time between successive data points, the tests as written will not
+take this into account.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOOS QC</a><ul>
+<li><a class="reference internal" href="#available-tests">Available Tests</a></li>
+<li><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li><a class="reference internal" href="#caveats-known-limitations">Caveats/Known Limitations</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to the IOOS QC documentation!</a></li>
+      <li>Next: <a href="installation.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, IOOS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
