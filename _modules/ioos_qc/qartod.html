@@ -40,10 +40,11 @@
           <div class="body" role="main">
             
   <h1>Source code for ioos_qc.qartod</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># coding=utf-8</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">pygc</span> <span class="k">import</span> <span class="n">great_distance</span>
 
@@ -55,7 +56,7 @@
 
 <div class="viewcode-block" id="QartodFlags"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.QartodFlags">[docs]</a><span class="k">class</span> <span class="nc">QartodFlags</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Primary flags for QARTOD.&quot;&quot;&quot;</span>
-    <span class="c1"># Don&#39;t subclass Enum since values don&#39;t fit nicely into a numpy array.</span>
+
     <span class="n">GOOD</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">SUSPECT</span> <span class="o">=</span> <span class="mi">3</span>
@@ -63,16 +64,19 @@
     <span class="n">MISSING</span> <span class="o">=</span> <span class="mi">9</span></div>
 
 
-<span class="n">N</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">]</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">float</span>  <span class="c1"># Union[int, float, Decimal]</span>
 <span class="n">span</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Span&#39;</span><span class="p">,</span> <span class="s1">&#39;minv maxv&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="qartod_compare"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.qartod_compare">[docs]</a><span class="k">def</span> <span class="nf">qartod_compare</span><span class="p">(</span><span class="n">vectors</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns an array of flags that represent the aggregate of all the vectors.</span>
+<div class="viewcode-block" id="qartod_compare"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.qartod_compare">[docs]</a><span class="k">def</span> <span class="nf">qartod_compare</span><span class="p">(</span><span class="n">vectors</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">]]</span>
+                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Aggregates an array of glags by precedence into a single array.</span>
 
-<span class="sd">    :param vectors: An array of arrays of flags of uniform length</span>
-<span class="sd">    :returns: An array of aggregated flag data</span>
+<span class="sd">    Args:</span>
+<span class="sd">        vectors: An array of uniform length arrays representing individual flags</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of aggregated flag data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">]</span>
     <span class="c1"># Assert that all of the vectors are the same size.</span>
@@ -100,27 +104,31 @@
 
 <div class="viewcode-block" id="location_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.location_test">[docs]</a><span class="k">def</span> <span class="nf">location_test</span><span class="p">(</span><span class="n">lon</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                   <span class="n">lat</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
-                  <span class="n">bbox</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                  <span class="n">bbox</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span>
                   <span class="n">range_max</span> <span class="p">:</span> <span class="n">N</span> <span class="o">=</span> <span class="kc">None</span>
                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Checks that a location is within reasonable bounds.</span>
+
 <span class="sd">    Checks that longitude and latitude are within reasonable bounds defaulting</span>
 <span class="sd">    to lon = [-180, 180] and lat = [-90, 90].  Optionally, check for a maximum</span>
 <span class="sd">    range parameter in great circle distance defaulting to meters which can</span>
-<span class="sd">    also use a unit from the quantities library.</span>
+<span class="sd">    also use a unit from the quantities library. Missing and masked data is</span>
+<span class="sd">    flagged as UNKNOWN.</span>
 
-<span class="sd">    :param lon: Longitude expressed as a floating point value</span>
-<span class="sd">    :param lat: Latitude expressed as a floating point value</span>
-<span class="sd">    :bbox: A length 4 array expressed in (minx, miny, maxx, maxy)</span>
-<span class="sd">    :range_max: Maximum range expressed in terms of geodesic curve distance.  Defaults to units of meters</span>
+<span class="sd">    Args:</span>
+<span class="sd">        lon: Longitudes as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        lat: Latitudes as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        bbox: A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</span>
+<span class="sd">        range_max: Maximum allowed range expressed in geodesic curve distance (meters).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">bboxnt</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;BBOX&#39;</span><span class="p">,</span> <span class="s1">&#39;minx miny maxx maxy&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="n">bbox</span> <span class="o">=</span> <span class="n">bboxnt</span><span class="p">(</span><span class="o">*</span><span class="n">bbox</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">bbox</span> <span class="o">=</span> <span class="n">bboxnt</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
@@ -170,12 +178,26 @@
 
 
 <div class="viewcode-block" id="gross_range_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.gross_range_test">[docs]</a><span class="k">def</span> <span class="nf">gross_range_test</span><span class="p">(</span><span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
-                     <span class="n">sensor_span</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">],</span>
-                     <span class="n">user_span</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                     <span class="n">fail_span</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">],</span>
+                     <span class="n">suspect_span</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Checks that values are within reasonable range bounds.</span>
 
-    <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">sensor_span</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">sspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">sensor_span</span><span class="p">))</span>
+<span class="sd">    Given a 2-tuple of minimum/maximum values, flag data outside of the given</span>
+<span class="sd">    range as FAIL data.  Optionally also flag data which falls outside of a user</span>
+<span class="sd">    defined range as SUSPECT. Missing and masked data is flagged as UNKNOWN.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        fail_span: 2-tuple range which to flag outside data as FAIL.</span>
+<span class="sd">        suspect_span: 2-tuple range which to flag outside data as SUSPECT. [optional]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">fail_span</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">sspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">fail_span</span><span class="p">))</span>
 
     <span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
     <span class="c1"># Save original shape</span>
@@ -187,9 +209,9 @@
     <span class="c1"># If the value is masked set the flag to MISSING</span>
     <span class="n">flag_arr</span><span class="p">[</span><span class="n">inp</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
 
-    <span class="k">if</span> <span class="n">user_span</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">user_span</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">uspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">user_span</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">suspect_span</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">suspect_span</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">uspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">suspect_span</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">uspan</span><span class="o">.</span><span class="n">minv</span> <span class="o">&lt;</span> <span class="n">sspan</span><span class="o">.</span><span class="n">minv</span> <span class="ow">or</span> <span class="n">uspan</span><span class="o">.</span><span class="n">maxv</span> <span class="o">&gt;</span> <span class="n">sspan</span><span class="o">.</span><span class="n">maxv</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;User span range may not exceed sensor span&#39;</span><span class="p">)</span>
         <span class="c1"># Flag suspect outside of user span</span>
@@ -261,6 +283,19 @@
                      <span class="n">vinp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                      <span class="n">zinp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Checks that values are within reasonable range bounds and flags as SUSPECT.</span>
+
+<span class="sd">    Data for which no ClimatologyConfig member exists is marked as UNKNOWN.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config: A ClimatologyConfig object.</span>
+<span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`.</span>
+<span class="sd">        vinp: Input data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        zinp: Z (depth) data as a numeric numpy array or a list of numbers.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">tinp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span>
     <span class="n">vinp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vinp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
@@ -295,6 +330,25 @@
 <div class="viewcode-block" id="spike_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.spike_test">[docs]</a><span class="k">def</span> <span class="nf">spike_test</span><span class="p">(</span><span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                <span class="n">thresholds</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span>
                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check for spikes by checking neigboring data against thresholds</span>
+
+<span class="sd">    Determine if there is a spike at data point n-1 by subtracting</span>
+<span class="sd">    the midpoint of n and n-2 and taking the absolute value of this</span>
+<span class="sd">    quantity, and checking if it exceeds a a low or high threshold.</span>
+<span class="sd">    Values which do not exceed either threshold are flagged GOOD,</span>
+<span class="sd">    values which exceed the low threshold are flagged SUSPECT,</span>
+<span class="sd">    and values which exceed the high threshold are flagged FAIL.</span>
+<span class="sd">    Missing and masked data is flagged as UNKNOWN.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        thresholds: 2-tuple threshold range.  The lower number will always</span>
+<span class="sd">            represent the SUSPECT threshold value and the higher number will</span>
+<span class="sd">            always represent the FAIL threshold value.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">thresholds</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">([</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span> <span class="p">))</span>
@@ -330,9 +384,28 @@
 
 
 <div class="viewcode-block" id="rate_of_change_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.rate_of_change_test">[docs]</a><span class="k">def</span> <span class="nf">rate_of_change_test</span><span class="p">(</span><span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
-                        <span class="n">std_deviation</span> <span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+                        <span class="n">deviation</span> <span class="p">:</span> <span class="n">N</span><span class="p">,</span>
                         <span class="n">num_deviations</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Checks the difference of neighboring values against N number of standard deviations.</span>
+
+<span class="sd">    Checks the first order difference of a series of values to see if</span>
+<span class="sd">    there are any values exceeding a standard deviation threshold defined</span>
+<span class="sd">    by the inputs.  These are then marked as SUSPECT.  It is up to the test operator</span>
+<span class="sd">    to determine an appropriate threshold value for the absolute difference not to</span>
+<span class="sd">    exceed. Threshold are expressed as a standard deviation threshold and a factor</span>
+<span class="sd">    controlling how many of the thresholds to tolerate before flagging.</span>
+<span class="sd">    Missing and masked data is flagged as UNKNOWN.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        deviation: The number to multiply by `num_deviations` to get the threshold value.</span>
+<span class="sd">        num_deviations: The number to multiple by `deviation` to get the threshold value.</span>
+<span class="sd">            Defaults to 3.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
     <span class="c1"># Save original shape</span>
@@ -350,10 +423,10 @@
         <span class="n">diff</span>
     <span class="p">)</span>
 
-    <span class="n">deviation</span> <span class="o">=</span> <span class="n">std_deviation</span> <span class="o">*</span> <span class="n">num_deviations</span>
+    <span class="n">final_threshold</span> <span class="o">=</span> <span class="n">deviation</span> <span class="o">*</span> <span class="n">num_deviations</span>
     <span class="c1"># If n - n-1 is greater than the set deviations, SUSPECT test</span>
     <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-        <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">deviation</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">SUSPECT</span>
+        <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">final_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">SUSPECT</span>
 
     <span class="c1"># If the value is masked set the flag to MISSING</span>
     <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
@@ -365,6 +438,23 @@
                    <span class="n">counts</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
                    <span class="n">tolerance</span> <span class="p">:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check for consecutively repeated values within a tolerance.</span>
+
+<span class="sd">    Missing and masked data is flagged as UNKNOWN.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        counts: 2-tuple representing the number of repetitions within `tolerance` to</span>
+<span class="sd">            allow before being flagged as SUSPECT or FAIL. The larger of the two</span>
+<span class="sd">            values is alwasy the SUSPECT threshold and the lower of the two numbers</span>
+<span class="sd">            is always the FAIL threshold.</span>
+<span class="sd">        tolerance: The tolerance that should be exceeded between consecutive values.</span>
+<span class="sd">            If the number consecutive values occuring that don&#39;t cross over `tolerance`</span>
+<span class="sd">            cross over either of the `counts` then the data will be flagged.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">chunk</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_all</span><span class="p">(</span>
@@ -414,6 +504,24 @@
                            <span class="n">threshold</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">],</span>
                            <span class="n">check_type</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;std&#39;</span>
                            <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check for near-flat-line conditions using a range or standard deviation.</span>
+
+<span class="sd">    Missing and masked data is flagged as UNKNOWN.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        threshold: 2-tuple representing the minimum thresholds to use for SUSPECT</span>
+<span class="sd">            and FAIL checks. The smaller of the two values is used in the SUSPECT</span>
+<span class="sd">            tests and the greater of the two values is used in the FAIL tests.</span>
+<span class="sd">        check_type: Either &#39;std&#39; (default) or &#39;range&#39;, depending on the type of check</span>
+<span class="sd">            you wish to perform.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A masked array of flag values equal in size to that of the input.</span>
+<span class="sd">        This array will always contain only a single unique value since all</span>
+<span class="sd">        input data is flagged together.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="n">threshold</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">threshold</span><span class="p">)))</span>
 

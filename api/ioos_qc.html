@@ -135,11 +135,29 @@ it does not monotonically increase</p>
 <dl class="function">
 <dt id="ioos_qc.qartod.attenuated_signal_test">
 <code class="descclassname">ioos_qc.qartod.</code><code class="descname">attenuated_signal_test</code><span class="sig-paren">(</span><em>inp</em>, <em>threshold</em>, <em>check_type='std'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#attenuated_signal_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.attenuated_signal_test" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Check for near-flat-line conditions using a range or standard deviation.</p>
+<p>Missing and masked data is flagged as UNKNOWN.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>threshold</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
+and FAIL checks. The smaller of the two values is used in the SUSPECT
+tests and the greater of the two values is used in the FAIL tests.</li>
+<li><strong>check_type</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) – Either ‘std’ (default) or ‘range’, depending on the type of check
+you wish to perform.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.
+This array will always contain only a single unique value since all
+input data is flagged together.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -148,11 +166,25 @@ it does not monotonically increase</p>
 <dl class="function">
 <dt id="ioos_qc.qartod.climatology_test">
 <code class="descclassname">ioos_qc.qartod.</code><code class="descname">climatology_test</code><span class="sig-paren">(</span><em>config</em>, <em>tinp</em>, <em>vinp</em>, <em>zinp</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#climatology_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.climatology_test" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Checks that values are within reasonable range bounds and flags as SUSPECT.</p>
+<p>Data for which no ClimatologyConfig member exists is marked as UNKNOWN.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>config</strong> (<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal"><span class="pre">ClimatologyConfig</span></code></a>) – A ClimatologyConfig object.</li>
+<li><strong>tinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
+<li><strong>vinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>zinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -161,11 +193,29 @@ it does not monotonically increase</p>
 <dl class="function">
 <dt id="ioos_qc.qartod.flat_line_test">
 <code class="descclassname">ioos_qc.qartod.</code><code class="descname">flat_line_test</code><span class="sig-paren">(</span><em>inp</em>, <em>counts</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Check for consecutively repeated values within a tolerance.</p>
+<p>Missing and masked data is flagged as UNKNOWN.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>counts</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">int</span></code>]) – 2-tuple representing the number of repetitions within <cite>tolerance</cite> to
+allow before being flagged as SUSPECT or FAIL. The larger of the two
+values is alwasy the SUSPECT threshold and the lower of the two numbers
+is always the FAIL threshold.</li>
+<li><strong>tolerance</strong> (<code class="xref py py-class docutils literal"><span class="pre">float</span></code>) – The tolerance that should be exceeded between consecutive values.
+If the number consecutive values occuring that don’t cross over <cite>tolerance</cite>
+cross over either of the <cite>counts</cite> then the data will be flagged.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -173,12 +223,27 @@ it does not monotonically increase</p>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.gross_range_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">gross_range_test</code><span class="sig-paren">(</span><em>inp</em>, <em>sensor_span</em>, <em>user_span=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#gross_range_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.gross_range_test" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">gross_range_test</code><span class="sig-paren">(</span><em>inp</em>, <em>fail_span</em>, <em>suspect_span=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#gross_range_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.gross_range_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that values are within reasonable range bounds.</p>
+<p>Given a 2-tuple of minimum/maximum values, flag data outside of the given
+range as FAIL data.  Optionally also flag data which falls outside of a user
+defined range as SUSPECT. Missing and masked data is flagged as UNKNOWN.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>fail_span</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – 2-tuple range which to flag outside data as FAIL.</li>
+<li><strong>suspect_span</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -186,28 +251,29 @@ it does not monotonically increase</p>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.location_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">location_test</code><span class="sig-paren">(</span><em>lon</em>, <em>lat</em>, <em>bbox=None</em>, <em>range_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#location_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.location_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks that longitude and latitude are within reasonable bounds defaulting
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">location_test</code><span class="sig-paren">(</span><em>lon</em>, <em>lat</em>, <em>bbox=(-180</em>, <em>-90</em>, <em>180</em>, <em>90)</em>, <em>range_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#location_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.location_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that a location is within reasonable bounds.</p>
+<p>Checks that longitude and latitude are within reasonable bounds defaulting
 to lon = [-180, 180] and lat = [-90, 90].  Optionally, check for a maximum
 range parameter in great circle distance defaulting to meters which can
-also use a unit from the quantities library.</p>
+also use a unit from the quantities library. Missing and masked data is
+flagged as UNKNOWN.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lon</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Decimal</span></code>]]) – Longitude expressed as a floating point value</li>
-<li><strong>lat</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Decimal</span></code>]]) – Latitude expressed as a floating point value</li>
+<li><strong>lon</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Longitudes as a numeric numpy array or a list of numbers.</li>
+<li><strong>lat</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Latitudes as a numeric numpy array or a list of numbers.</li>
+<li><strong>bbox</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</li>
+<li><strong>range_max</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Maximum allowed range expressed in geodesic curve distance (meters).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Bbox:</th><td class="field-body"><p class="first">A length 4 array expressed in (minx, miny, maxx, maxy)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Range_max:</th><td class="field-body"><p class="first">Maximum range expressed in terms of geodesic curve distance.  Defaults to units of meters</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
 </td>
 </tr>
 </tbody>
@@ -217,16 +283,16 @@ also use a unit from the quantities library.</p>
 <dl class="function">
 <dt id="ioos_qc.qartod.qartod_compare">
 <code class="descclassname">ioos_qc.qartod.</code><code class="descname">qartod_compare</code><span class="sig-paren">(</span><em>vectors</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#qartod_compare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.qartod_compare" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an array of flags that represent the aggregate of all the vectors.</p>
+<dd><p>Aggregates an array of glags by precedence into a single array.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Decimal</span></code>]]]) – An array of arrays of flags of uniform length</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]]) – An array of uniform length arrays representing individual flags</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array of aggregated flag data</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A masked array of aggregated flag data.</td>
 </tr>
 </tbody>
 </table>
@@ -234,12 +300,32 @@ also use a unit from the quantities library.</p>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.rate_of_change_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">rate_of_change_test</code><span class="sig-paren">(</span><em>inp</em>, <em>std_deviation</em>, <em>num_deviations=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#rate_of_change_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.rate_of_change_test" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">rate_of_change_test</code><span class="sig-paren">(</span><em>inp</em>, <em>deviation</em>, <em>num_deviations=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#rate_of_change_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.rate_of_change_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the difference of neighboring values against N number of standard deviations.</p>
+<p>Checks the first order difference of a series of values to see if
+there are any values exceeding a standard deviation threshold defined
+by the inputs.  These are then marked as SUSPECT.  It is up to the test operator
+to determine an appropriate threshold value for the absolute difference not to
+exceed. Threshold are expressed as a standard deviation threshold and a factor
+controlling how many of the thresholds to tolerate before flagging.
+Missing and masked data is flagged as UNKNOWN.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>deviation</strong> (<code class="xref py py-class docutils literal"><span class="pre">float</span></code>) – The number to multiply by <cite>num_deviations</cite> to get the threshold value.</li>
+<li><strong>num_deviations</strong> (<code class="xref py py-class docutils literal"><span class="pre">int</span></code>) – The number to multiple by <cite>deviation</cite> to get the threshold value.
+Defaults to 3.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -254,11 +340,31 @@ also use a unit from the quantities library.</p>
 <dl class="function">
 <dt id="ioos_qc.qartod.spike_test">
 <code class="descclassname">ioos_qc.qartod.</code><code class="descname">spike_test</code><span class="sig-paren">(</span><em>inp</em>, <em>thresholds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#spike_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.spike_test" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Check for spikes by checking neigboring data against thresholds</p>
+<p>Determine if there is a spike at data point n-1 by subtracting
+the midpoint of n and n-2 and taking the absolute value of this
+quantity, and checking if it exceeds a a low or high threshold.
+Values which do not exceed either threshold are flagged GOOD,
+values which exceed the low threshold are flagged SUSPECT,
+and values which exceed the high threshold are flagged FAIL.
+Missing and masked data is flagged as UNKNOWN.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – 2-tuple threshold range.  The lower number will always
+represent the SUSPECT threshold value and the higher number will
+always represent the FAIL threshold value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -270,12 +376,26 @@ also use a unit from the quantities library.</p>
 <dl class="function">
 <dt id="ioos_qc.utils.check_timestamps">
 <code class="descclassname">ioos_qc.utils.</code><code class="descname">check_timestamps</code><span class="sig-paren">(</span><em>times</em>, <em>max_time_interval=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#check_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.check_timestamps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks that the times supplied are in monotonically increasing
+<dd><p>Sanity checks for timestamp arrays</p>
+<p>Checks that the times supplied are in monotonically increasing
 chronological order, and optionally that time intervals between
 measurements do not exceed a value <cite>max_time_interval</cite>.  Note that this is
 not a QARTOD test, but rather a utility test to make sure times are in the
 proper order and optionally do not have large gaps prior to processing the
 data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>times</strong> (<code class="xref py py-class docutils literal"><span class="pre">ndarray</span></code>) – Input array of timestamps</li>
+<li><strong>max_time_interval</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – The interval between values should not exceed this
+value. [optional]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
