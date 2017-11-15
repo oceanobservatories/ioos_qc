@@ -47,27 +47,37 @@
 <p>Collection of utilities, scripts and tests to assist in automated
 quality assurance and quality control for oceanographic datasets and
 observing systems.</p>
-<p>Please see our project documentation <a class="reference external" href="https://ioos.github.io/qartod/">QARTOD Documentation</a></p>
+<p>Please see the <a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/">IOOS QC project documentation</a> for additional information.</p>
 <div class="section" id="available-tests">
 <h2>Available Tests<a class="headerlink" href="#available-tests" title="Permalink to this headline">¶</a></h2>
-<p>Current tests refer to the <a class="reference external" href="https://ioos.noaa.gov/project/qartod/">QARTOD manuals</a>
-Current tests are taken from the Wind, Water Level, Currents, In-Situ Temperature and Salinity QARTOD Manuals</p>
+<div class="section" id="qartod">
+<h3>QARTOD<a class="headerlink" href="#qartod" title="Permalink to this headline">¶</a></h3>
+<p>Current tests refer to the <a class="reference external" href="https://ioos.noaa.gov/project/qartod/">QARTOD manuals</a> and are taken from the Wind, Water Level, Currents, In-Situ Temperature and Salinity manuals</p>
 <p>Currently implemented tests are:</p>
 <ul class="simple">
-<li>Gross Range Test</li>
-<li>Attenuated Signal Test</li>
-<li>Flat Line Test</li>
-<li>Rate of Change Test</li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.location_test">Location Test</a></li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.gross_range_test">Gross Range Test</a></li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.climatology_test">Climatology Test</a></li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.spike_test">Spike Test</a></li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.rate_of_change_test">Rate of Change Test</a></li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.flat_line_test">Flat Line Test</a></li>
+<li><a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/api/ioos_qc.html#ioos_qc.qartod.attenuated_signal_test">Attenuated Signal Test</a></li>
 </ul>
+</div>
 </div>
 <div class="section" id="running-tests">
 <h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
-<p>To run tests, import the QARTOD qc module:</p>
+<p>To run tests, import the correct module:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc</span> <span class="k">import</span> <span class="n">qartod</span>
 </pre></div>
 </div>
-<p>Refer to the Sphinx generated documentation for information on how to use the
-various QARTOD tests.</p>
+<p>You can then run any test you would like:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">qartod</span><span class="o">.</span><span class="n">location_test</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">qartod</span><span class="o">.</span><span class="n">spike_test</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Refer to the <a class="reference external" href="https://axiom-data-science.github.io/ioos_qc/">documentation</a> for information on how to use the various tests.</p>
 </div>
 <div class="section" id="caveats-known-limitations">
 <h2>Caveats/Known Limitations<a class="headerlink" href="#caveats-known-limitations" title="Permalink to this headline">¶</a></h2>
@@ -87,7 +97,10 @@ take this into account.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">IOOS QC</a><ul>
-<li><a class="reference internal" href="#available-tests">Available Tests</a></li>
+<li><a class="reference internal" href="#available-tests">Available Tests</a><ul>
+<li><a class="reference internal" href="#qartod">QARTOD</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#running-tests">Running tests</a></li>
 <li><a class="reference internal" href="#caveats-known-limitations">Caveats/Known Limitations</a></li>
 </ul>
