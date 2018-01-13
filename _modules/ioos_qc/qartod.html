@@ -43,6 +43,7 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># coding=utf-8</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Real</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
 
@@ -64,7 +65,7 @@
     <span class="n">MISSING</span> <span class="o">=</span> <span class="mi">9</span></div>
 
 
-<span class="n">N</span> <span class="o">=</span> <span class="nb">float</span>  <span class="c1"># Union[int, float, Decimal]</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">Real</span>
 <span class="n">span</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Span&#39;</span><span class="p">,</span> <span class="s1">&#39;minv maxv&#39;</span><span class="p">)</span>
 
 
@@ -582,7 +583,7 @@
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

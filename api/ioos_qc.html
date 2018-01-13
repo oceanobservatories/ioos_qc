@@ -142,8 +142,8 @@ it does not monotonically increase</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>threshold</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>threshold</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
 and FAIL checks. The smaller of the two values is used in the SUSPECT
 tests and the greater of the two values is used in the FAIL tests.</li>
 <li><strong>check_type</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) – Either ‘std’ (default) or ‘range’, depending on the type of check
@@ -174,9 +174,9 @@ input data is flagged together.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>config</strong> (<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal"><span class="pre">ClimatologyConfig</span></code></a>) – A ClimatologyConfig object.</li>
-<li><strong>tinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
-<li><strong>vinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>zinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</li>
+<li><strong>tinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
+<li><strong>vinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>zinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</li>
 </ul>
 </td>
 </tr>
@@ -200,12 +200,12 @@ input data is flagged together.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
 <li><strong>counts</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">int</span></code>]) – 2-tuple representing the number of repetitions within <cite>tolerance</cite> to
 allow before being flagged as SUSPECT or FAIL. The larger of the two
 values is alwasy the SUSPECT threshold and the lower of the two numbers
 is always the FAIL threshold.</li>
-<li><strong>tolerance</strong> (<code class="xref py py-class docutils literal"><span class="pre">float</span></code>) – The tolerance that should be exceeded between consecutive values.
+<li><strong>tolerance</strong> (<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
 If the number consecutive values occuring that don’t cross over <cite>tolerance</cite>
 cross over either of the <cite>counts</cite> then the data will be flagged.</li>
 </ul>
@@ -233,9 +233,9 @@ defined range as SUSPECT. Missing and masked data is flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>fail_span</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – 2-tuple range which to flag outside data as FAIL.</li>
-<li><strong>suspect_span</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</li>
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>fail_span</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – 2-tuple range which to flag outside data as FAIL.</li>
+<li><strong>suspect_span</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</li>
 </ul>
 </td>
 </tr>
@@ -263,10 +263,10 @@ flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lon</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Longitudes as a numeric numpy array or a list of numbers.</li>
-<li><strong>lat</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Latitudes as a numeric numpy array or a list of numbers.</li>
-<li><strong>bbox</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</li>
-<li><strong>range_max</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Maximum allowed range expressed in geodesic curve distance (meters).</li>
+<li><strong>lon</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Longitudes as a numeric numpy array or a list of numbers.</li>
+<li><strong>lat</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Latitudes as a numeric numpy array or a list of numbers.</li>
+<li><strong>bbox</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</li>
+<li><strong>range_max</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Maximum allowed range expressed in geodesic curve distance (meters).</li>
 </ul>
 </td>
 </tr>
@@ -288,7 +288,7 @@ flagged as UNKNOWN.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]]) – An array of uniform length arrays representing individual flags</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]]) – An array of uniform length arrays representing individual flags</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
 </tr>
@@ -314,8 +314,8 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>deviation</strong> (<code class="xref py py-class docutils literal"><span class="pre">float</span></code>) – The number to multiply by <cite>num_deviations</cite> to get the threshold value.</li>
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>deviation</strong> (<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>) – The number to multiply by <cite>num_deviations</cite> to get the threshold value.</li>
 <li><strong>num_deviations</strong> (<code class="xref py py-class docutils literal"><span class="pre">int</span></code>) – The number to multiple by <cite>deviation</cite> to get the threshold value.
 Defaults to 3.</li>
 </ul>
@@ -353,8 +353,8 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal"><span class="pre">float</span></code>]) – 2-tuple threshold range.  The lower number will always
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – 2-tuple threshold range.  The lower number will always
 represent the SUSPECT threshold value and the higher number will
 always represent the FAIL threshold value.</li>
 </ul>
@@ -463,7 +463,7 @@ value. [optional]</li>
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
