@@ -45,7 +45,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Real</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">from</span> <span class="nn">pygc</span> <span class="k">import</span> <span class="n">great_distance</span>
 
@@ -69,9 +70,21 @@
 <span class="n">span</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Span&#39;</span><span class="p">,</span> <span class="s1">&#39;minv maxv&#39;</span><span class="p">)</span>
 
 
+<span class="c1"># Convert dates to datetime and leave datetimes alone. This is also reducing all</span>
+<span class="c1"># objects to second precision</span>
+<div class="viewcode-block" id="mapdates"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.mapdates">[docs]</a><span class="k">def</span> <span class="nf">mapdates</span><span class="p">(</span><span class="n">dates</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">d</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">d</span></div>
+
+
 <div class="viewcode-block" id="qartod_compare"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.qartod_compare">[docs]</a><span class="k">def</span> <span class="nf">qartod_compare</span><span class="p">(</span><span class="n">vectors</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">]]</span>
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Aggregates an array of glags by precedence into a single array.</span>
+    <span class="sd">&quot;&quot;&quot;Aggregates an array of flags by precedence into a single array.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        vectors: An array of uniform length arrays representing individual flags</span>
@@ -261,6 +274,7 @@
             <span class="n">zspan</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">tspan</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">tspan</span> <span class="o">=</span> <span class="n">mapdates</span><span class="p">(</span><span class="n">tspan</span><span class="p">)</span>
         <span class="n">tspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">tspan</span><span class="p">))</span>
 
         <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">vspan</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -279,9 +293,9 @@
         <span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="climatology_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.climatology_test">[docs]</a><span class="k">def</span> <span class="nf">climatology_test</span><span class="p">(</span><span class="n">config</span> <span class="p">:</span> <span class="n">ClimatologyConfig</span><span class="p">,</span>
+<div class="viewcode-block" id="climatology_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.climatology_test">[docs]</a><span class="k">def</span> <span class="nf">climatology_test</span><span class="p">(</span><span class="n">config</span> <span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ClimatologyConfig</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]]],</span>
+                     <span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                      <span class="n">tinp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
-                     <span class="n">vinp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                      <span class="n">zinp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Checks that values are within reasonable range bounds and flags as SUSPECT.</span>
@@ -289,7 +303,9 @@
 <span class="sd">    Data for which no ClimatologyConfig member exists is marked as UNKNOWN.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: A ClimatologyConfig object.</span>
+<span class="sd">        config: A ClimatologyConfig object or a list of dicts containing tuples</span>
+<span class="sd">            that can be used to create a ClimatologyConfig object. Dict should be composed of</span>
+<span class="sd">            keywords &#39;tspan&#39; and &#39;vspan&#39; as well as an optiona &#39;zspan&#39;</span>
 <span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`.</span>
 <span class="sd">        vinp: Input data as a numeric numpy array or a list of numbers.</span>
 <span class="sd">        zinp: Z (depth) data as a numeric numpy array or a list of numbers.</span>
@@ -298,31 +314,38 @@
 <span class="sd">        A masked array of flag values equal in size to that of the input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># Create a ClimatologyConfig object if one was not passed in</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ClimatologyConfig</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">ClimatologyConfig</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">climate_config_dict</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">**</span><span class="n">climate_config_dict</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">c</span>
+
     <span class="n">tinp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span>
-    <span class="n">vinp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vinp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+    <span class="n">inp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
     <span class="n">zinp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zinp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
 
     <span class="c1"># Save original shape</span>
-    <span class="n">original_shape</span> <span class="o">=</span> <span class="n">vinp</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">original_shape</span> <span class="o">=</span> <span class="n">inp</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="n">tinp</span> <span class="o">=</span> <span class="n">tinp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-    <span class="n">vinp</span> <span class="o">=</span> <span class="n">vinp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">inp</span> <span class="o">=</span> <span class="n">inp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">zinp</span> <span class="o">=</span> <span class="n">zinp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
     <span class="c1"># Start with everything as passing (1)</span>
-    <span class="n">flag_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">vinp</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+    <span class="n">flag_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
 
     <span class="c1"># If the value is masked set the flag to MISSING</span>
-    <span class="n">flag_arr</span><span class="p">[</span><span class="n">vinp</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
+    <span class="n">flag_arr</span><span class="p">[</span><span class="n">inp</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
 
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tind</span><span class="p">,</span> <span class="n">vind</span><span class="p">,</span> <span class="n">zind</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tinp</span><span class="p">,</span> <span class="n">vinp</span><span class="p">,</span> <span class="n">zinp</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tind</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">zind</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tinp</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">zinp</span><span class="p">)):</span>
         <span class="n">minv</span><span class="p">,</span> <span class="n">maxv</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">tind</span><span class="p">,</span> <span class="n">zind</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">minv</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">maxv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">flag_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Flag suspect outside of climatology span</span>
             <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">vind</span> <span class="o">&lt;</span> <span class="n">minv</span> <span class="ow">or</span> <span class="n">vind</span> <span class="o">&gt;</span> <span class="n">maxv</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="n">minv</span> <span class="ow">or</span> <span class="n">ind</span> <span class="o">&gt;</span> <span class="n">maxv</span><span class="p">:</span>
                     <span class="n">flag_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">SUSPECT</span>
 
     <span class="k">return</span> <span class="n">flag_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span></div>

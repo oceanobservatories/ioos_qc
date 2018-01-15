@@ -46,15 +46,15 @@
 <span class="kn">from</span> <span class="nn">ioos_qc.qartod</span> <span class="k">import</span> <span class="n">QartodFlags</span>
 
 
-<div class="viewcode-block" id="pressure_check"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.gliders.pressure_check">[docs]</a><span class="k">def</span> <span class="nf">pressure_check</span><span class="p">(</span><span class="n">pressure</span><span class="p">):</span>
+<div class="viewcode-block" id="pressure_check"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.gliders.pressure_check">[docs]</a><span class="k">def</span> <span class="nf">pressure_check</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Returns an array of flag values where each input is flagged with SUSPECT if</span>
 <span class="sd">    it does not monotonically increase</span>
 
-<span class="sd">    :param numpy.ndarray pressure:</span>
+<span class="sd">    :param numpy.ndarray inp:</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span>
-    <span class="n">flags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">GOOD</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span>
+    <span class="n">flags</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">GOOD</span>
 
     <span class="c1"># Correct for downcast vs upcast by flipping the sign if it&#39;s decreasing</span>
     <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span>
