@@ -1,4 +1,5 @@
 ./_modules/index.html
+./_modules/ioos_qc/config.html
 ./_modules/ioos_qc/gliders.html
 ./_modules/ioos_qc/qartod.html
 ./_modules/ioos_qc/utils.html
@@ -8,6 +9,7 @@
 ./_sources/installation.rst.txt
 ./_sources/readme.rst.txt
 ./_sources/resources.rst.txt
+./_sources/usage.rst.txt
 ./_static/ajax-loader.gif
 ./_static/alabaster.css
 ./_static/basic.css
@@ -41,3 +43,4 @@
 ./resources.html
 ./search.html
 ./searchindex.js
+./usage.html

@@ -1,0 +1,270 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Usage &#8212; ioos_qc 0.0.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IOOS QARTOD Resources" href="resources.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>There are two main ways to use the <cite>ioos_qc</cite> project.</p>
+<ul class="simple">
+<li>Manually calling test methods</li>
+<li>Using <cite>QcConfig</cite> objects</li>
+</ul>
+<div class="section" id="manual">
+<h2>Manual<a class="headerlink" href="#manual" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="qcconfig">
+<h2>QcConfig<a class="headerlink" href="#qcconfig" title="Permalink to this headline">¶</a></h2>
+<p>A <cite>QcConfig</cite> object can be created and used to run checks against multiple streams of input data. To create a <cite>QcConfig</cite> object you may use a <cite>dict</cite> or a file system path in the form of a <cite>str</cite> or <cite>Path</cite> object.</p>
+<div class="section" id="creation">
+<h3>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Use a dict to load the QcConfig</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">QcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+            <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Use a YAML file to load the <cite>QcConfig</cite></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-yaml"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">qartod</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">gross_range_test</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">suspect_span</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span> <span class="nv">11</span><span class="p p-Indicator">]</span>
+        <span class="l l-Scalar l-Scalar-Plain">fail_span</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">12</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">With <cite>str</cite> path</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">QcConfig</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">With <cite>Path</cite> object</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">QcConfig</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">([</span><span class="n">path</span><span class="p">])</span>
+<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="running">
+<h3>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
+<p>Once you have a valid <cite>QcConfig</cite> object, the <cite>run</cite> method will execute all test that are configured within the object against any number of input arguments. The input arguments you supply to the <cite>run</cite> method should match the input arguments of each test. Refer to the API documentation for which tests require which input arguments.</p>
+<p>For example, if I want to run the <cite>gross_range_test</cite> and the <cite>location_test</cite> using a single <cite>QcConfig</cite> object I would setup my object like so:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">QcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+            <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="s1">&#39;location_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;bbox&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li><cite>gross_range_test</cite> requires the parameter <cite>inp</cite>.</li>
+<li><cite>location_test</cite> requires the parameters <cite>lon</cite> and <cite>lat</cite>.</li>
+</ul>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">inp</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">))</span>  <span class="c1"># To satisfy `gross_range_test`</span>
+    <span class="n">lat</span><span class="o">=</span><span class="p">[</span> <span class="o">-</span><span class="mi">41</span><span class="p">,</span>  <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">39</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span>  <span class="mi">40</span><span class="p">,</span>  <span class="mi">41</span><span class="p">],</span>  <span class="c1"># To satisfy `location_test`</span>
+    <span class="n">lon</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">101</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">99</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">],</span>  <span class="c1"># To satisfy `location_test`</span>
+ <span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+<p>All arguments can also be specified in the config object:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+            <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+            <span class="s1">&#39;inp&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span> <span class="mi">12</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="s1">&#39;location_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;bbox&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+            <span class="s1">&#39;lat&#39;</span><span class="p">:</span>  <span class="p">[</span> <span class="o">-</span><span class="mi">41</span><span class="p">,</span>  <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">39</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span>  <span class="mi">40</span><span class="p">,</span>  <span class="mi">41</span><span class="p">],</span>
+            <span class="s1">&#39;lon&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="o">-</span><span class="mi">101</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">99</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#manual">Manual</a></li>
+<li><a class="reference internal" href="#qcconfig">QcConfig</a><ul>
+<li><a class="reference internal" href="#creation">Creation</a></li>
+<li><a class="reference internal" href="#running">Running</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="resources.html" title="next chapter">IOOS QARTOD Resources</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, IOOS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
