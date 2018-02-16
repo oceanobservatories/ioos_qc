@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>ioos_qc.config &#8212; ioos_qc 0.0.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -30,8 +22,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,26 +35,35 @@
 <span class="c1"># coding=utf-8</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">simplejson</span> <span class="k">as</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="k">import</span> <span class="n">signature</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">importlib</span> <span class="k">import</span> <span class="n">import_module</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">netCDF4</span> <span class="k">as</span> <span class="nn">nc4</span>
 <span class="kn">from</span> <span class="nn">ruamel</span> <span class="k">import</span> <span class="n">yaml</span>
 
-<span class="n">L</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ioos_qc.utils</span> <span class="k">import</span> <span class="n">dict_update</span><span class="p">,</span> <span class="n">cf_safe_name</span><span class="p">,</span> <span class="n">GeoNumpyDateEncoder</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>  <span class="c1"># noqa</span>
 
 
 <div class="viewcode-block" id="QcConfig"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.config.QcConfig">[docs]</a><span class="k">class</span> <span class="nc">QcConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_or_dict</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">path_or_dict</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">))</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_dict</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
             <span class="k">with</span> <span class="n">path_or_dict</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input is not valid file path or YAMLObject&#39;</span><span class="p">)</span>
 
@@ -73,14 +73,14 @@
         <span class="sd">&quot;&quot;&quot; Runs the tests that are defined in the config object.</span>
 <span class="sd">            Returns a dictionary of the results as defined by the config</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">modu</span><span class="p">,</span> <span class="n">tests</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">testpackage</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;ioos_qc.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modu</span><span class="p">))</span>
             <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No ioos_qc test package &quot;</span><span class="si">{}</span><span class="s1">&quot; was found, skipping.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modu</span><span class="p">))</span>
 
-            <span class="n">results</span><span class="p">[</span><span class="n">modu</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">modu</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">testname</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="n">tests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">testpackage</span><span class="p">,</span> <span class="n">testname</span><span class="p">):</span>
                     <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No test named &quot;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&quot; was found, skipping&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modu</span><span class="p">,</span> <span class="n">testname</span><span class="p">))</span>
@@ -97,16 +97,183 @@
 
                     <span class="n">testkwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">testkwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">valid_keywords</span> <span class="p">}</span>
                     <span class="n">results</span><span class="p">[</span><span class="n">modu</span><span class="p">][</span><span class="n">testname</span><span class="p">]</span> <span class="o">=</span> <span class="n">runfunc</span><span class="p">(</span><span class="o">**</span><span class="n">testkwargs</span><span class="p">)</span>  <span class="c1"># noqa</span>
-
-        <span class="k">return</span> <span class="n">results</span></div>
+</div>
+        <span class="k">return</span> <span class="n">results</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; A human friendly representation of the tests that this QcConfig object defines. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; A human friendly representation of the tests that this QcConfig object defines. &quot;&quot;&quot;</span></div>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; A human friendly representation of the tests that this QcConfig object defines. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span></div>
+
+<div class="viewcode-block" id="NcQcConfig"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.config.NcQcConfig">[docs]</a><span class="k">class</span> <span class="nc">NcQcConfig</span><span class="p">(</span><span class="n">QcConfig</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_or_ncd_or_dict</span><span class="p">):</span>
+
+        <span class="n">load_as_dataset</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">path_or_ncd_or_dict</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                <span class="n">load_as_dataset</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">path_or_ncd_or_dict</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">Loader</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+                <span class="n">load_as_dataset</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">load_as_dataset</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">path_or_ncd_or_dict</span><span class="p">,</span> <span class="n">decode_cf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">filter_by_attrs</span><span class="p">(</span>
+                    <span class="n">ioos_qc_module</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">ioos_qc_test</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">ioos_qc_config</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">ioos_qc_target</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                    <span class="n">vobj</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">dv</span><span class="p">]</span>
+
+                    <span class="c1"># Because a data variables can have more than one check</span>
+                    <span class="c1"># associated with it we need to merge any existing configs</span>
+                    <span class="c1"># for this variable</span>
+                    <span class="n">newdict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span>
+                        <span class="n">vobj</span><span class="o">.</span><span class="n">ioos_qc_module</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">({</span>
+                            <span class="n">vobj</span><span class="o">.</span><span class="n">ioos_qc_test</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">vobj</span><span class="o">.</span><span class="n">ioos_qc_config</span><span class="p">))</span>
+                        <span class="p">})</span>
+                    <span class="p">})</span>
+                    <span class="n">merged</span> <span class="o">=</span> <span class="n">dict_update</span><span class="p">(</span>
+                        <span class="n">y</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">vobj</span><span class="o">.</span><span class="n">ioos_qc_target</span><span class="p">,</span> <span class="p">{}),</span>
+                        <span class="n">newdict</span>
+                    <span class="p">)</span>
+                    <span class="n">y</span><span class="p">[</span><span class="n">vobj</span><span class="o">.</span><span class="n">ioos_qc_target</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">y</span>
+
+<div class="viewcode-block" id="NcQcConfig.run"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.config.NcQcConfig.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_or_ncd</span><span class="p">,</span> <span class="o">**</span><span class="n">passedkwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Runs the tests that are defined in the config object.</span>
+<span class="sd">            Returns a dictionary of the results as defined by the config</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">path_or_ncd</span><span class="p">,</span> <span class="n">decode_cf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">vname</span><span class="p">,</span> <span class="n">qcobj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">qc</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">qcobj</span><span class="p">)</span>
+                <span class="c1"># Find any var specific kwargs to pass onto the run</span>
+                <span class="k">if</span> <span class="n">vname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                    <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not in Dataset, skipping&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="n">varkwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;inp&#39;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">vname</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="p">}</span>
+                <span class="k">if</span> <span class="n">vname</span> <span class="ow">in</span> <span class="n">passedkwargs</span><span class="p">:</span>
+                    <span class="n">varkwargs</span> <span class="o">=</span> <span class="n">dict_update</span><span class="p">(</span><span class="n">varkwargs</span><span class="p">,</span> <span class="n">passedkwargs</span><span class="p">[</span><span class="n">vname</span><span class="p">])</span>
+
+                <span class="n">results</span><span class="p">[</span><span class="n">vname</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">**</span><span class="n">varkwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">results</span>
+
+<div class="viewcode-block" id="NcQcConfig.save_to_netcdf"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.config.NcQcConfig.save_to_netcdf">[docs]</a>    <span class="k">def</span> <span class="nf">save_to_netcdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_or_ncd</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ncd</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">should_close</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_ncd</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
+                <span class="n">ncd</span> <span class="o">=</span> <span class="n">nc4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path_or_ncd</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path_or_ncd</span><span class="p">,</span> <span class="n">nc4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+                <span class="n">ncd</span> <span class="o">=</span> <span class="n">path_or_ncd</span>
+                <span class="n">should_close</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input is not a valid file path or Dataset&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Iterate over each variable</span>
+            <span class="k">for</span> <span class="n">vname</span><span class="p">,</span> <span class="n">qcobj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="k">if</span> <span class="n">vname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ncd</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                    <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not found in the Dataset, skipping&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">vname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                    <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No results for </span><span class="si">{}</span><span class="s1">, skipping&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="n">source_var</span> <span class="o">=</span> <span class="n">ncd</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">vname</span><span class="p">]</span>
+
+                <span class="c1"># Iterate over each module</span>
+                <span class="k">for</span> <span class="n">modu</span><span class="p">,</span> <span class="n">tests</span> <span class="ow">in</span> <span class="n">qcobj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                    <span class="k">if</span> <span class="n">modu</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="n">vname</span><span class="p">]:</span>
+                        <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No results for </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">, skipping&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">modu</span><span class="p">))</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">testpackage</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;ioos_qc.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modu</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+                        <span class="n">L</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;No ioos_qc test package &quot;</span><span class="si">{}</span><span class="s1">&quot; was found, skipping.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">modu</span><span class="p">))</span>
+                        <span class="k">continue</span>
+
+                    <span class="c1"># Keep track of the test names so we can add to the source&#39;s</span>
+                    <span class="c1"># ancillary_variables at the end</span>
+                    <span class="n">qcvar_names</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">testname</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="n">tests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                        <span class="k">if</span> <span class="n">testname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="n">vname</span><span class="p">][</span><span class="n">modu</span><span class="p">]:</span>
+                            <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No results for </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">, skipping&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">modu</span><span class="p">,</span> <span class="n">testname</span><span class="p">))</span>
+                            <span class="k">continue</span>
+
+                        <span class="c1"># Try to find a qc variable that matches this config</span>
+                        <span class="n">qcvars</span> <span class="o">=</span> <span class="n">ncd</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span>
+                            <span class="n">ioos_qc_module</span><span class="o">=</span><span class="n">modu</span><span class="p">,</span>
+                            <span class="n">ioos_qc_test</span><span class="o">=</span><span class="n">testname</span><span class="p">,</span>
+                            <span class="n">ioos_qc_target</span><span class="o">=</span><span class="n">vname</span>
+                        <span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">qcvars</span><span class="p">:</span>
+                            <span class="n">qcvarname</span> <span class="o">=</span> <span class="n">cf_safe_name</span><span class="p">(</span><span class="n">vname</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">modu</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">testname</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">qcvars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="n">names</span> <span class="o">=</span> <span class="p">[</span> <span class="n">v</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">qcvars</span> <span class="p">]</span>
+                                <span class="n">L</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Found more than one QC variable match: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
+                            <span class="c1"># Use the last one found</span>
+                            <span class="n">qcvarname</span> <span class="o">=</span> <span class="n">qcvars</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+                        <span class="n">varresults</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">vname</span><span class="p">][</span><span class="n">modu</span><span class="p">][</span><span class="n">testname</span><span class="p">]</span>
+                        <span class="n">varconfig</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">GeoNumpyDateEncoder</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                        <span class="c1"># Get flags from module attribute called FLAGS</span>
+                        <span class="n">flags</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">testpackage</span><span class="p">,</span> <span class="s1">&#39;FLAGS&#39;</span><span class="p">)</span>
+                        <span class="n">varflagnames</span> <span class="o">=</span> <span class="p">[</span> <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">flags</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)</span> <span class="p">]</span>
+                        <span class="n">varflagvalues</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">varflagnames</span> <span class="p">]</span>
+
+                        <span class="k">if</span> <span class="n">qcvarname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ncd</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">ncd</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">qcvarname</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">,</span> <span class="n">source_var</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">ncd</span><span class="p">[</span><span class="n">qcvarname</span><span class="p">]</span>
+
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;standard_name&#39;</span><span class="p">,</span> <span class="s1">&#39;status_flag&#39;</span><span class="p">)</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;flag_values&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">(</span><span class="n">varflagvalues</span><span class="p">))</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;flag_meanings&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">varflagnames</span><span class="p">))</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;valid_min&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">varflagvalues</span><span class="p">)))</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;valid_max&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">byte</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">varflagvalues</span><span class="p">)))</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_config&#39;</span><span class="p">,</span> <span class="n">varconfig</span><span class="p">)</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_module&#39;</span><span class="p">,</span> <span class="n">modu</span><span class="p">)</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_test&#39;</span><span class="p">,</span> <span class="n">testname</span><span class="p">)</span>
+                        <span class="n">v</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_target&#39;</span><span class="p">,</span> <span class="n">vname</span><span class="p">)</span>
+                        <span class="n">v</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">varresults</span>
+
+                        <span class="n">qcvar_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qcvarname</span><span class="p">)</span>
+
+                <span class="c1"># Update the source ancillary_variables</span>
+                <span class="n">existing</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">source_var</span><span class="p">,</span> <span class="s1">&#39;ancillary_variables&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                <span class="n">existing</span> <span class="o">+=</span> <span class="n">qcvar_names</span>
+                <span class="n">source_var</span><span class="o">.</span><span class="n">ancillary_variables</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">existing</span><span class="p">)))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="n">ncd</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ncd</span> <span class="ow">and</span> <span class="n">should_close</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span></div></div>
+                <span class="n">ncd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 
           </div>
@@ -124,12 +291,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -140,7 +309,7 @@
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

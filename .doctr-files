@@ -7,7 +7,6 @@
 ./_sources/api/modules.rst.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
-./_sources/readme.rst.txt
 ./_sources/resources.rst.txt
 ./_sources/usage.rst.txt
 ./_static/ajax-loader.gif
@@ -18,6 +17,7 @@
 ./_static/comment.png
 ./_static/custom.css
 ./_static/doctools.js
+./_static/documentation_options.js
 ./_static/down-pressed.png
 ./_static/down.png
 ./_static/file.png
@@ -39,7 +39,6 @@
 ./installation.html
 ./objects.inv
 ./py-modindex.html
-./readme.html
 ./resources.html
 ./search.html
 ./searchindex.js

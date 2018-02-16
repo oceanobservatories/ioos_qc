@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>ioos_qc package &#8212; ioos_qc 0.0.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -31,8 +23,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,9 +39,27 @@
 <div class="section" id="module-ioos_qc.config">
 <span id="ioos-qc-config-module"></span><h2>ioos_qc.config module<a class="headerlink" href="#module-ioos_qc.config" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="ioos_qc.config.NcQcConfig">
+<em class="property">class </em><code class="descclassname">ioos_qc.config.</code><code class="descname">NcQcConfig</code><span class="sig-paren">(</span><em>path_or_ncd_or_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/config.html#NcQcConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.config.NcQcConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ioos_qc.config.QcConfig" title="ioos_qc.config.QcConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ioos_qc.config.QcConfig</span></code></a></p>
+<dl class="method">
+<dt id="ioos_qc.config.NcQcConfig.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>path_or_ncd</em>, <em>**passedkwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/config.html#NcQcConfig.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.config.NcQcConfig.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the tests that are defined in the config object.
+Returns a dictionary of the results as defined by the config</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ioos_qc.config.NcQcConfig.save_to_netcdf">
+<code class="descname">save_to_netcdf</code><span class="sig-paren">(</span><em>path_or_ncd</em>, <em>results</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/config.html#NcQcConfig.save_to_netcdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.config.NcQcConfig.save_to_netcdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="ioos_qc.config.QcConfig">
 <em class="property">class </em><code class="descclassname">ioos_qc.config.</code><code class="descname">QcConfig</code><span class="sig-paren">(</span><em>path_or_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/config.html#QcConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.config.QcConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="ioos_qc.config.QcConfig.run">
 <code class="descname">run</code><span class="sig-paren">(</span><em>**passedkwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/config.html#QcConfig.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.config.QcConfig.run" title="Permalink to this definition">¶</a></dt>
@@ -84,7 +93,7 @@ it does not monotonically increase</p>
 <dl class="class">
 <dt id="ioos_qc.qartod.ClimatologyConfig">
 <em class="property">class </em><code class="descclassname">ioos_qc.qartod.</code><code class="descname">ClimatologyConfig</code><span class="sig-paren">(</span><em>members=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="ioos_qc.qartod.ClimatologyConfig.add">
 <code class="descname">add</code><span class="sig-paren">(</span><em>tspan</em>, <em>vspan</em>, <em>zspan=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.add" title="Permalink to this definition">¶</a></dt>
@@ -92,7 +101,7 @@ it does not monotonically increase</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">None</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +110,7 @@ it does not monotonically increase</p>
 <dl class="attribute">
 <dt id="ioos_qc.qartod.ClimatologyConfig.mem">
 <code class="descname">mem</code><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.mem" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">window</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">window</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -116,10 +125,16 @@ it does not monotonically increase</p>
 
 </dd></dl>
 
+<dl class="attribute">
+<dt id="ioos_qc.qartod.FLAGS">
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">FLAGS</code><a class="headerlink" href="#ioos_qc.qartod.FLAGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#ioos_qc.qartod.QartodFlags" title="ioos_qc.qartod.QartodFlags"><code class="xref py py-class docutils literal notranslate"><span class="pre">ioos_qc.qartod.QartodFlags</span></code></a></p>
+</dd></dl>
+
 <dl class="class">
 <dt id="ioos_qc.qartod.QartodFlags">
 <em class="property">class </em><code class="descclassname">ioos_qc.qartod.</code><code class="descname">QartodFlags</code><a class="reference internal" href="../_modules/ioos_qc/qartod.html#QartodFlags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.QartodFlags" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Primary flags for QARTOD.</p>
 <dl class="attribute">
 <dt id="ioos_qc.qartod.QartodFlags.FAIL">
@@ -158,16 +173,16 @@ it does not monotonically increase</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>threshold</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
 and FAIL checks. The smaller of the two values is used in the SUSPECT
 tests and the greater of the two values is used in the FAIL tests.</li>
-<li><strong>check_type</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) – Either ‘std’ (default) or ‘range’, depending on the type of check
+<li><strong>check_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Either ‘std’ (default) or ‘range’, depending on the type of check
 you wish to perform.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.
@@ -189,16 +204,16 @@ input data is flagged together.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>config</strong> (<code class="xref py py-data docutils literal"><span class="pre">Union</span></code>[<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal"><span class="pre">ClimatologyConfig</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>]]]) – A ClimatologyConfig object or a list of dicts containing tuples
+<li><strong>config</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClimatologyConfig</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]]]) – A ClimatologyConfig object or a list of dicts containing tuples
 that can be used to create a ClimatologyConfig object. Dict should be composed of
 keywords ‘tspan’ and ‘vspan’ as well as an optiona ‘zspan’</li>
-<li><strong>tinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
+<li><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
 <li><strong>vinp</strong> – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>zinp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</li>
+<li><strong>zinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
@@ -218,18 +233,18 @@ keywords ‘tspan’ and ‘vspan’ as well as an optiona ‘zspan’</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>counts</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal"><span class="pre">int</span></code>]) – 2-tuple representing the number of repetitions within <cite>tolerance</cite> to
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>counts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – 2-tuple representing the number of repetitions within <cite>tolerance</cite> to
 allow before being flagged as SUSPECT or FAIL. The larger of the two
 values is alwasy the SUSPECT threshold and the lower of the two numbers
 is always the FAIL threshold.</li>
-<li><strong>tolerance</strong> (<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
+<li><strong>tolerance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
 If the number consecutive values occuring that don’t cross over <cite>tolerance</cite>
 cross over either of the <cite>counts</cite> then the data will be flagged.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
@@ -251,13 +266,13 @@ defined range as SUSPECT. Missing and masked data is flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>fail_span</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – 2-tuple range which to flag outside data as FAIL.</li>
-<li><strong>suspect_span</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</li>
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>fail_span</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple range which to flag outside data as FAIL.</li>
+<li><strong>suspect_span</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
@@ -281,14 +296,14 @@ flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>lon</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Longitudes as a numeric numpy array or a list of numbers.</li>
-<li><strong>lat</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Latitudes as a numeric numpy array or a list of numbers.</li>
-<li><strong>bbox</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</li>
-<li><strong>range_max</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Maximum allowed range expressed in geodesic curve distance (meters).</li>
+<li><strong>lon</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Longitudes as a numeric numpy array or a list of numbers.</li>
+<li><strong>lat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Latitudes as a numeric numpy array or a list of numbers.</li>
+<li><strong>bbox</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</li>
+<li><strong>range_max</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Maximum allowed range expressed in geodesic curve distance (meters).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
@@ -311,9 +326,9 @@ flagged as UNKNOWN.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]]) – An array of uniform length arrays representing individual flags</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vectors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]]) – An array of uniform length arrays representing individual flags</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A masked array of aggregated flag data.</td>
 </tr>
@@ -337,14 +352,14 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>deviation</strong> (<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>) – The number to multiply by <cite>num_deviations</cite> to get the threshold value.</li>
-<li><strong>num_deviations</strong> (<code class="xref py py-class docutils literal"><span class="pre">int</span></code>) – The number to multiple by <cite>deviation</cite> to get the threshold value.
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>deviation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The number to multiply by <cite>num_deviations</cite> to get the threshold value.</li>
+<li><strong>num_deviations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number to multiple by <cite>deviation</cite> to get the threshold value.
 Defaults to 3.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
@@ -357,7 +372,7 @@ Defaults to 3.</li>
 <dl class="attribute">
 <dt id="ioos_qc.qartod.span">
 <code class="descclassname">ioos_qc.qartod.</code><code class="descname">span</code><a class="headerlink" href="#ioos_qc.qartod.span" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">ioos_qc.qartod.Span</span></code></p>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ioos_qc.qartod.Span</span></code></p>
 </dd></dl>
 
 <dl class="function">
@@ -376,14 +391,14 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>inp</strong> (<code class="xref py py-class docutils literal"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – 2-tuple threshold range.  The lower number will always
+<li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
+<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple threshold range.  The lower number will always
 represent the SUSPECT threshold value and the higher number will
 always represent the FAIL threshold value.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">MaskedArray</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal notranslate"><span class="pre">MaskedArray</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A masked array of flag values equal in size to that of the input.</p>
@@ -396,6 +411,23 @@ always represent the FAIL threshold value.</li>
 </div>
 <div class="section" id="module-ioos_qc.utils">
 <span id="ioos-qc-utils-module"></span><h2>ioos_qc.utils module<a class="headerlink" href="#module-ioos_qc.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ioos_qc.utils.GeoNumpyDateEncoder">
+<em class="property">class </em><code class="descclassname">ioos_qc.utils.</code><code class="descname">GeoNumpyDateEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em>, <em>use_decimal=True</em>, <em>namedtuple_as_object=True</em>, <em>tuple_as_array=True</em>, <em>bigint_as_string=False</em>, <em>item_sort_key=None</em>, <em>for_json=False</em>, <em>ignore_nan=False</em>, <em>int_as_string_bitcount=None</em>, <em>iterable_as_array=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#GeoNumpyDateEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.GeoNumpyDateEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">geojson.codec.GeoJSONEncoder</span></code></p>
+<dl class="method">
+<dt id="ioos_qc.utils.GeoNumpyDateEncoder.default">
+<code class="descname">default</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#GeoNumpyDateEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.GeoNumpyDateEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>If input object is an ndarray it will be converted into a list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ioos_qc.utils.cf_safe_name">
+<code class="descclassname">ioos_qc.utils.</code><code class="descname">cf_safe_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#cf_safe_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.cf_safe_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="ioos_qc.utils.check_timestamps">
 <code class="descclassname">ioos_qc.utils.</code><code class="descname">check_timestamps</code><span class="sig-paren">(</span><em>times</em>, <em>max_time_interval=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#check_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.check_timestamps" title="Permalink to this definition">¶</a></dt>
@@ -411,8 +443,8 @@ data.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>times</strong> (<code class="xref py py-class docutils literal"><span class="pre">ndarray</span></code>) – Input array of timestamps</li>
-<li><strong>max_time_interval</strong> (<code class="xref py py-data docutils literal"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal"><span class="pre">Real</span></code>]) – The interval between values should not exceed this
+<li><strong>times</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – Input array of timestamps</li>
+<li><strong>max_time_interval</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – The interval between values should not exceed this
 value. [optional]</li>
 </ul>
 </td>
@@ -422,13 +454,18 @@ value. [optional]</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="ioos_qc.utils.dict_update">
+<code class="descclassname">ioos_qc.utils.</code><code class="descname">dict_update</code><span class="sig-paren">(</span><em>d</em>, <em>u</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#dict_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.dict_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="ioos_qc.utils.isfixedlength">
 <code class="descclassname">ioos_qc.utils.</code><code class="descname">isfixedlength</code><span class="sig-paren">(</span><em>lst</em>, <em>length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/utils.html#isfixedlength"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.utils.isfixedlength" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -471,12 +508,14 @@ value. [optional]</li>
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -487,7 +526,7 @@ value. [optional]</li>
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

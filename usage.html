@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Usage &#8212; ioos_qc 0.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -32,8 +24,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -43,10 +34,11 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>There are two main ways to use the <cite>ioos_qc</cite> project.</p>
+<p>There are three main ways to use the <cite>ioos_qc</cite> project.</p>
 <ul class="simple">
-<li>Manually calling test methods</li>
-<li>Using <cite>QcConfig</cite> objects</li>
+<li><a class="reference internal" href="#manual">Manual</a></li>
+<li><a class="reference internal" href="#qcconfig">QcConfig</a></li>
+<li><a class="reference internal" href="#ncqcconfig">NcQcConfig</a></li>
 </ul>
 <div class="section" id="manual">
 <h2>Manual<a class="headerlink" href="#manual" title="Permalink to this headline">¶</a></h2>
@@ -54,11 +46,16 @@
 <div class="section" id="qcconfig">
 <h2>QcConfig<a class="headerlink" href="#qcconfig" title="Permalink to this headline">¶</a></h2>
 <p>A <cite>QcConfig</cite> object can be created and used to run checks against multiple streams of input data. To create a <cite>QcConfig</cite> object you may use a <cite>dict</cite> or a file system path in the form of a <cite>str</cite> or <cite>Path</cite> object.</p>
+<p>You can create an <cite>QcConfig</cite> object from the following:</p>
+<ul class="simple">
+<li>python <cite>dict</cite> or <cite>OrderedDict</cite></li>
+<li>JSON/YAML filepath (<cite>str</cite> or <cite>Path</cite> object)</li>
+</ul>
 <div class="section" id="creation">
 <h3>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Use a dict to load the QcConfig</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Use a dict to load the QcConfig</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -82,46 +79,30 @@
 </pre></div>
 </td></tr></table></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Use a YAML file to load the <cite>QcConfig</cite></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-yaml"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">qartod</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">gross_range_test</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">suspect_span</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span> <span class="nv">11</span><span class="p p-Indicator">]</span>
-        <span class="l l-Scalar l-Scalar-Plain">fail_span</span><span class="p p-Indicator">:</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">12</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">With <cite>str</cite> path</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">QcConfig</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">With <cite>Path</cite> object</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">With <cite>str</cite> path</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">qartod:</span>
+<span class="sd">    gross_range_test:</span>
+<span class="sd">        suspect_span: [1, 11]</span>
+<span class="sd">        fail_span:</span>
+<span class="sd">            - 0</span>
+<span class="sd">            - 12</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">QcConfig</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">([</span><span class="n">path</span><span class="p">])</span>
-<span class="k">with</span> <span class="n">p</span><span class="o">.</span><span class="n">open</span><span class="p">()</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">q</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </pre></div>
 </td></tr></table></div>
@@ -131,7 +112,7 @@
 <h3>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
 <p>Once you have a valid <cite>QcConfig</cite> object, the <cite>run</cite> method will execute all test that are configured within the object against any number of input arguments. The input arguments you supply to the <cite>run</cite> method should match the input arguments of each test. Refer to the API documentation for which tests require which input arguments.</p>
 <p>For example, if I want to run the <cite>gross_range_test</cite> and the <cite>location_test</cite> using a single <cite>QcConfig</cite> object I would setup my object like so:</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -164,7 +145,7 @@
 <li><cite>gross_range_test</cite> requires the parameter <cite>inp</cite>.</li>
 <li><cite>location_test</cite> requires the parameters <cite>lon</cite> and <cite>lat</cite>.</li>
 </ul>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
@@ -176,7 +157,7 @@
 </pre></div>
 </td></tr></table></div>
 <p>All arguments can also be specified in the config object:</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -210,6 +191,309 @@
 </pre></div>
 </td></tr></table></div>
 </div>
+<div class="section" id="results">
+<h3>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
+<p>The results of a <cite>QcConfig.run(…)</cite> is a python OrderedDict that has the same structure as the
+config object. The leaves (test parameters) are replaced by the results of each test.</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Example results object</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">NcQcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+            <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="s1">&#39;location_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;bbox&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="n">gross_range_tests</span> <span class="k">return</span> <span class="n">value</span><span class="p">,</span>
+    <span class="s1">&#39;location_test&#39;</span><span class="p">:</span> <span class="n">location_test</span> <span class="k">return</span> <span class="n">value</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+</div>
+<div class="section" id="ncqcconfig">
+<h2>NcQcConfig<a class="headerlink" href="#ncqcconfig" title="Permalink to this headline">¶</a></h2>
+<p>A <cite>NcQcConfig</cite> object is meant to mimic how QC information would be stored and represented in a
+netCDF file. It is composed of a top level key that is the variable name that should be the subject
+of the QC checks defined underneath it. The checks are defined as <cite>QcConfig</cite> compatible objects.
+You can think of <cite>NcQcConfig</cite> objects as linking a series of <cite>QcConfig</cite> objects to a single set
+of input data.</p>
+<p>You can create an <cite>NcQcConfig</cite> object from the following:</p>
+<ul class="simple">
+<li>python <cite>dict</cite> or <cite>OrderedDict</cite></li>
+<li>JSON/YAML filepath (<cite>str</cite> or <cite>Path</cite> object)</li>
+<li><cite>netCDF4</cite> filepath (<cite>str</cite> or <cite>Path</cite> object)</li>
+<li><cite>netCDF4.Dataset</cite> object</li>
+</ul>
+<div class="section" id="id1">
+<h3>Creation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Load a python dict</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">NcQcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;data1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+                <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">NcQcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Use a <cite>netCDF4.Dataset</cite> to load the NcQcConfig</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">NcQcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+    <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">nc4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ncd</span><span class="p">:</span>
+    <span class="n">ncd</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">data1</span> <span class="o">=</span> <span class="n">ncd</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;data1&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,))</span>
+    <span class="n">data1</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">&#39;air_temperature&#39;</span>
+    <span class="n">data1</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="n">qc1</span> <span class="o">=</span> <span class="n">ncd</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;qc1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">qc1</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_module&#39;</span><span class="p">,</span> <span class="s1">&#39;qartod&#39;</span><span class="p">)</span>
+    <span class="n">qc1</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_test&#39;</span><span class="p">,</span>   <span class="s1">&#39;gross_range_test&#39;</span><span class="p">)</span>
+    <span class="n">qc1</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_target&#39;</span><span class="p">,</span> <span class="s1">&#39;data1&#39;</span><span class="p">)</span>
+    <span class="n">qc1</span><span class="o">.</span><span class="n">setncattr</span><span class="p">(</span><span class="s1">&#39;ioos_qc_config&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">NcQcConfig</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Running<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Once you have a valid <cite>NcQcConfig</cite> object, the <cite>run</cite> method will execute all of the tests that are configured within the object against a <cite>netCDF.Dataset</cite> or <cite>netCDF4</cite> file path. Like a <cite>QcConfig</cite> object, you may pass additional input parameters into the <cite>run</cite> method to passthough into the individual qc tests. <cite>NcQcConfig</cite> will automatically use the full array of values on each data variable you have defined (top level key in the config object) as the <cite>inp</cite> parameter. Refer to the API documentation for which tests require which input arguments.</p>
+<p>The <cite>run</cite> method does not alter the passed in <cite>netCDF4.Dataset</cite> object (it is opened read only).
+It is only used to pull the data from each variable to pass into each test.</p>
+<p>For example, if I want to run the <cite>gross_range_test</cite> and the <cite>location_test</cite> using a single <cite>QcConfig</cite> object I would setup my object like so:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">NcQcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;data1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+                <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">NcQcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># Note that the data from the netCDF variable `data1`</span>
+<span class="c1"># will be passed as the `inp` parameter automatically so</span>
+<span class="c1"># we can omit it here. We can also pass in `inp` manually</span>
+<span class="c1"># to override the default behavior if we so choose.</span>
+<span class="n">ncresults</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="id3">
+<h3>Results<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>The results of a <cite>NcQcConfig.run(…)</cite> is a python OrderedDict that has the same structure as the
+config object. The leaves (test parameters) are replaced by the results of each test.</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Example results object</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">NcQcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;data1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+                <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qc</span> <span class="o">=</span> <span class="n">NcQcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">qc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="s1">&#39;data1&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="n">gross_range_test</span> <span class="k">return</span> <span class="n">value</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<p>You can save a result object back to a netCDF file by calling the <cite>save_to_netcdf</cite> function on
+an <cite>NcQcConfig</cite> object. This will alter the <cite>netCDF4</cite> file or <cite>netCDF4.Dataset</cite> object passed into
+it by creating new variables for any tests present in the result object that are also present in the
+config object. If existing variables matching the QC test are found it will update them with the
+new result data and config attributes.</p>
+<p>After saving a results object to a netCDF files, that file will be able to load the exact <cite>NcQcConfig</cite>
+object used to define and run the quality variables available in the file. This is very powerful!</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Example save to netcdf and load config object again</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc.config</span> <span class="kn">import</span> <span class="n">NcQcConfig</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;data1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;qartod&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;gross_range_test&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;suspect_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+                <span class="s1">&#39;fail_span&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qc1</span> <span class="o">=</span> <span class="n">NcQcConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">results1</span> <span class="o">=</span> <span class="n">qc1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">qc1</span><span class="o">.</span><span class="n">save_to_netcdf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">results1</span><span class="p">)</span>
+
+<span class="n">qc2</span> <span class="o">=</span> <span class="n">NcQcConfig</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="n">results2</span> <span class="o">=</span> <span class="n">qc2</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">results1</span> <span class="o">==</span> <span class="n">results2</span>
+<span class="k">assert</span> <span class="n">qc1</span> <span class="o">==</span> <span class="n">qc2</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -226,6 +510,13 @@
 <li><a class="reference internal" href="#qcconfig">QcConfig</a><ul>
 <li><a class="reference internal" href="#creation">Creation</a></li>
 <li><a class="reference internal" href="#running">Running</a></li>
+<li><a class="reference internal" href="#results">Results</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ncqcconfig">NcQcConfig</a><ul>
+<li><a class="reference internal" href="#id1">Creation</a></li>
+<li><a class="reference internal" href="#id2">Running</a></li>
+<li><a class="reference internal" href="#id3">Results</a></li>
 </ul>
 </li>
 </ul>
@@ -242,12 +533,14 @@
 </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -258,7 +551,7 @@
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
