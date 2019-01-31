@@ -4,16 +4,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>ioos_qc package &#8212; ioos_qc 0.0.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="ioos_qc" href="modules.html" />
@@ -29,6 +29,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="module-ioos_qc">
@@ -206,7 +208,7 @@ input data is flagged together.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>config</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClimatologyConfig</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]]]) – A ClimatologyConfig object or a list of dicts containing tuples
 that can be used to create a ClimatologyConfig object. Dict should be composed of
-keywords ‘tspan’ and ‘vspan’ as well as an optiona ‘zspan’</li>
+keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</li>
 <li><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
 <li><strong>vinp</strong> – Input data as a numeric numpy array or a list of numbers.</li>
 <li><strong>zinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</li>
@@ -225,7 +227,7 @@ keywords ‘tspan’ and ‘vspan’ as well as an optiona ‘zspan’</li>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.flat_line_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">flat_line_test</code><span class="sig-paren">(</span><em>inp</em>, <em>counts</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">flat_line_test</code><span class="sig-paren">(</span><em>inp</em>, <em>tinp</em>, <em>thresholds</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check for consecutively repeated values within a tolerance.</p>
 <p>Missing and masked data is flagged as UNKNOWN.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -234,12 +236,13 @@ keywords ‘tspan’ and ‘vspan’ as well as an optiona ‘zspan’</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>counts</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – 2-tuple representing the number of repetitions within <cite>tolerance</cite> to
-allow before being flagged as SUSPECT or FAIL. The larger of the two
-values is alwasy the SUSPECT threshold and the lower of the two numbers
+<li><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
+<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – 2-tuple representing the number of seconds within <cite>tolerance</cite> to
+allow before being flagged as SUSPECT or FAIL. The smaller of the two
+values is always the SUSPECT threshold and the larger of the two numbers
 is always the FAIL threshold.</li>
 <li><strong>tolerance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
-If the number consecutive values occuring that don’t cross over <cite>tolerance</cite>
+If the number consecutive values occurring that don’t cross over <cite>tolerance</cite>
 cross over either of the <cite>counts</cite> then the data will be flagged.</li>
 </ul>
 </td>
@@ -338,14 +341,12 @@ flagged as UNKNOWN.</p>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.rate_of_change_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">rate_of_change_test</code><span class="sig-paren">(</span><em>inp</em>, <em>deviation</em>, <em>num_deviations=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#rate_of_change_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.rate_of_change_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks the difference of neighboring values against N number of standard deviations.</p>
-<p>Checks the first order difference of a series of values to see if
-there are any values exceeding a standard deviation threshold defined
-by the inputs.  These are then marked as SUSPECT.  It is up to the test operator
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">rate_of_change_test</code><span class="sig-paren">(</span><em>inp</em>, <em>tinp</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#rate_of_change_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.rate_of_change_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the first order difference of a series of values to see if
+there are any values exceeding a threshold defined by the inputs.
+These are then marked as SUSPECT.  It is up to the test operator
 to determine an appropriate threshold value for the absolute difference not to
-exceed. Threshold are expressed as a standard deviation threshold and a factor
-controlling how many of the thresholds to tolerate before flagging.
+exceed. Threshold is expressed as a rate in observations units per second.
 Missing and masked data is flagged as UNKNOWN.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -353,9 +354,9 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>deviation</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The number to multiply by <cite>num_deviations</cite> to get the threshold value.</li>
-<li><strong>num_deviations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number to multiple by <cite>deviation</cite> to get the threshold value.
-Defaults to 3.</li>
+<li><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
+<li><strong>threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – A float value representing a rate of change over time,
+in observation units per second.</li>
 </ul>
 </td>
 </tr>
@@ -481,21 +482,49 @@ value. [optional]</li>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">ioos_qc package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-ioos_qc.config">ioos_qc.config module</a></li>
-<li><a class="reference internal" href="#module-ioos_qc.gliders">ioos_qc.gliders module</a></li>
-<li><a class="reference internal" href="#module-ioos_qc.qartod">ioos_qc.qartod module</a></li>
-<li><a class="reference internal" href="#module-ioos_qc.utils">ioos_qc.utils module</a></li>
+<h1 class="logo"><a href="../index.html">ioos_qc</a></h1>
+
+
+
+<p class="blurb">IOOS Quality Control tests implemented in Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=axiom-data-science&repo=ioos_qc&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">IOOS QARTOD Resources</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">ioos_qc</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ioos_qc package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ioos_qc.config">ioos_qc.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ioos_qc.gliders">ioos_qc.gliders module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ioos_qc.qartod">ioos_qc.qartod module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ioos_qc.utils">ioos_qc.utils module</a></li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -518,6 +547,14 @@ value. [optional]</li>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -526,8 +563,8 @@ value. [optional]</li>
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
