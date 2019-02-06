@@ -355,13 +355,14 @@
 
 
 <div class="viewcode-block" id="spike_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.spike_test">[docs]</a><span class="k">def</span> <span class="nf">spike_test</span><span class="p">(</span><span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
-               <span class="n">thresholds</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span>
+               <span class="n">suspect_threshold</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span>
+               <span class="n">fail_threshold</span><span class="p">:</span> <span class="n">N</span>
                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check for spikes by checking neigboring data against thresholds</span>
+    <span class="sd">&quot;&quot;&quot;Check for spikes by checking neighboring data against thresholds</span>
 
 <span class="sd">    Determine if there is a spike at data point n-1 by subtracting</span>
 <span class="sd">    the midpoint of n and n-2 and taking the absolute value of this</span>
-<span class="sd">    quantity, and checking if it exceeds a a low or high threshold.</span>
+<span class="sd">    quantity, and checking if it exceeds a low or high threshold.</span>
 <span class="sd">    Values which do not exceed either threshold are flagged GOOD,</span>
 <span class="sd">    values which exceed the low threshold are flagged SUSPECT,</span>
 <span class="sd">    and values which exceed the high threshold are flagged FAIL.</span>
@@ -369,16 +370,12 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
-<span class="sd">        thresholds: 2-tuple threshold range.  The lower number will always</span>
-<span class="sd">            represent the SUSPECT threshold value and the higher number will</span>
-<span class="sd">            always represent the FAIL threshold value.</span>
+<span class="sd">        suspect_threshold: The SUSPECT threshold value, in observations units.</span>
+<span class="sd">        fail_threshold: The SUSPECT threshold value, in observations units.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A masked array of flag values equal in size to that of the input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">thresholds</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">([</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span> <span class="p">))</span>
 
     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
@@ -401,11 +398,11 @@
 
     <span class="c1"># If n-1 - ref is greater than the low threshold, SUSPECT test</span>
     <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-        <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">minv</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">SUSPECT</span>
+        <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">suspect_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">SUSPECT</span>
 
     <span class="c1"># If n-1 - ref is greater than the high threshold, FAIL test</span>
     <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-        <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">maxv</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">FAIL</span>
+        <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">fail_threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">FAIL</span>
 
     <span class="c1"># If the value is masked or nan set the flag to MISSING</span>
     <span class="n">flag_arr</span><span class="p">[</span><span class="n">diff</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
@@ -459,7 +456,8 @@
 
 <div class="viewcode-block" id="flat_line_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.flat_line_test">[docs]</a><span class="k">def</span> <span class="nf">flat_line_test</span><span class="p">(</span><span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                    <span class="n">tinp</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
-                   <span class="n">thresholds</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+                   <span class="n">suspect_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                   <span class="n">fail_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                    <span class="n">tolerance</span> <span class="p">:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Check for consecutively repeated values within a tolerance.</span>
@@ -469,10 +467,10 @@
 <span class="sd">    Args:</span>
 <span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
 <span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`.</span>
-<span class="sd">        thresholds: 2-tuple representing the number of seconds within `tolerance` to</span>
-<span class="sd">            allow before being flagged as SUSPECT or FAIL. The smaller of the two</span>
-<span class="sd">            values is always the SUSPECT threshold and the larger of the two numbers</span>
-<span class="sd">            is always the FAIL threshold.</span>
+<span class="sd">        suspect_threshold: The number of seconds within `tolerance` to</span>
+<span class="sd">            allow before being flagged as SUSPECT.</span>
+<span class="sd">        fail_threshold: The number of seconds within `tolerance` to</span>
+<span class="sd">            allow before being flagged as FAIL.</span>
 <span class="sd">        tolerance: The tolerance that should be exceeded between consecutive values.</span>
 <span class="sd">            If the number consecutive values occurring that don&#39;t cross over `tolerance`</span>
 <span class="sd">            cross over either of the `counts` then the data will be flagged.</span>
@@ -492,11 +490,9 @@
             <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
         <span class="k">return</span> <span class="n">out</span>
 
-    <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
     <span class="c1"># convert time thresholds to number of observations</span>
     <span class="n">time_interval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tinp</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">counts</span> <span class="o">=</span> <span class="n">thresholds</span> <span class="o">/</span> <span class="n">time_interval</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">suspect_threshold</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fail_threshold</span><span class="p">))</span> <span class="o">/</span> <span class="n">time_interval</span>
     <span class="n">counts</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)))</span>
 
     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -655,7 +651,7 @@
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

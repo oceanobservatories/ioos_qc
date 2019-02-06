@@ -227,7 +227,7 @@ keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</li>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.flat_line_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">flat_line_test</code><span class="sig-paren">(</span><em>inp</em>, <em>tinp</em>, <em>thresholds</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">flat_line_test</code><span class="sig-paren">(</span><em>inp</em>, <em>tinp</em>, <em>suspect_threshold</em>, <em>fail_threshold</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check for consecutively repeated values within a tolerance.</p>
 <p>Missing and masked data is flagged as UNKNOWN.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -237,10 +237,10 @@ keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
 <li><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</li>
-<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – 2-tuple representing the number of seconds within <cite>tolerance</cite> to
-allow before being flagged as SUSPECT or FAIL. The smaller of the two
-values is always the SUSPECT threshold and the larger of the two numbers
-is always the FAIL threshold.</li>
+<li><strong>suspect_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number of seconds within <cite>tolerance</cite> to
+allow before being flagged as SUSPECT.</li>
+<li><strong>fail_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number of seconds within <cite>tolerance</cite> to
+allow before being flagged as FAIL.</li>
 <li><strong>tolerance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
 If the number consecutive values occurring that don’t cross over <cite>tolerance</cite>
 cross over either of the <cite>counts</cite> then the data will be flagged.</li>
@@ -378,11 +378,11 @@ in observation units per second.</li>
 
 <dl class="function">
 <dt id="ioos_qc.qartod.spike_test">
-<code class="descclassname">ioos_qc.qartod.</code><code class="descname">spike_test</code><span class="sig-paren">(</span><em>inp</em>, <em>thresholds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#spike_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.spike_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check for spikes by checking neigboring data against thresholds</p>
+<code class="descclassname">ioos_qc.qartod.</code><code class="descname">spike_test</code><span class="sig-paren">(</span><em>inp</em>, <em>suspect_threshold</em>, <em>fail_threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#spike_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.spike_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check for spikes by checking neighboring data against thresholds</p>
 <p>Determine if there is a spike at data point n-1 by subtracting
 the midpoint of n and n-2 and taking the absolute value of this
-quantity, and checking if it exceeds a a low or high threshold.
+quantity, and checking if it exceeds a low or high threshold.
 Values which do not exceed either threshold are flagged GOOD,
 values which exceed the low threshold are flagged SUSPECT,
 and values which exceed the high threshold are flagged FAIL.
@@ -393,9 +393,8 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</li>
-<li><strong>thresholds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple threshold range.  The lower number will always
-represent the SUSPECT threshold value and the higher number will
-always represent the FAIL threshold value.</li>
+<li><strong>suspect_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The SUSPECT threshold value, in observations units.</li>
+<li><strong>fail_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The SUSPECT threshold value, in observations units.</li>
 </ul>
 </td>
 </tr>
@@ -563,7 +562,7 @@ value. [optional]</li>
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
