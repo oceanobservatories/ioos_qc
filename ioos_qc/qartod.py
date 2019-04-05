@@ -174,7 +174,7 @@ def gross_range_test(inp : Sequence[N],
     """
 
     assert isfixedlength(fail_span, 2)
-    sspan = span(*sorted(fail_span))
+    fspan = span(*sorted(fail_span))
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -191,16 +191,16 @@ def gross_range_test(inp : Sequence[N],
 
     if suspect_span is not None:
         assert isfixedlength(suspect_span, 2)
-        uspan = span(*sorted(suspect_span))
-        if uspan.minv < sspan.minv or uspan.maxv > sspan.maxv:
-            raise ValueError('User span range may not exceed sensor span')
+        sspan = span(*sorted(suspect_span))
+        if sspan.minv < fspan.minv or sspan.maxv > fspan.maxv:
+            raise ValueError('Suspect span range may not exceed Fail span range')
         # Flag suspect outside of user span
         with np.errstate(invalid='ignore'):
-            flag_arr[(inp < uspan.minv) | (inp > uspan.maxv)] = QartodFlags.SUSPECT
+            flag_arr[(inp < sspan.minv) | (inp > sspan.maxv)] = QartodFlags.SUSPECT
 
     # Flag suspect outside of sensor span
     with np.errstate(invalid='ignore'):
-        flag_arr[(inp < sspan.minv) | (inp > sspan.maxv)] = QartodFlags.FAIL
+        flag_arr[(inp < fspan.minv) | (inp > fspan.maxv)] = QartodFlags.FAIL
 
     return flag_arr.reshape(original_shape)
 

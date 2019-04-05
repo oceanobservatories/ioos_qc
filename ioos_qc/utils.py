@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # coding=utf-8
+import os
 import geojson
 import logging
-from datetime import datetime, date
+from pathlib import Path
 from typing import Union
 from numbers import Real
+from datetime import datetime, date
 
 import numpy as np
+import netCDF4 as nc4
 
 N = Real
 L = logging.getLogger(__name__)  # noqa
@@ -113,3 +116,37 @@ class GeoNumpyDateEncoder(geojson.GeoJSONEncoder):
             return None
 
         return geojson.factory.GeoJSON.to_instance(obj)
+
+
+def ncd_from_object(path_or_ncd, create=True, mode=None):
+
+    created = False
+    mode = mode or 'a'
+
+    if isinstance(path_or_ncd, (str, Path)):
+
+        if os.path.exists(str(path_or_ncd)):
+            try:
+                ncd = nc4.Dataset(str(path_or_ncd), mode)
+            except OSError:
+                # Create new file
+                if create is True:
+                    ncd = nc4.Dataset(str(path_or_ncd), 'w')
+                    created = True
+                else:
+                    raise ValueError('Input is not an existing file path or Dataset')
+        else:
+            # Create new file
+            if create is True:
+                ncd = nc4.Dataset(str(path_or_ncd), 'w')
+                created = True
+            else:
+                raise ValueError('Input is not a existing file path or Dataset')
+
+    elif isinstance(path_or_ncd, nc4.Dataset):
+        ncd = path_or_ncd
+
+    else:
+        raise ValueError('Input is not a valid file path or netCDF4 Dataset object')
+
+    return ncd, created

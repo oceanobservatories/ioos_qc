@@ -503,10 +503,15 @@ class TestRunNcConfig(unittest.TestCase):
             qc1.setncattr('ioos_qc_test', 'gross_range_test')
             qc1.setncattr('ioos_qc_target', 'data1')
 
+    def tearDown(self):
+        os.close(self.fh)
+        os.remove(self.fp)
+
     def test_running_save_nc(self):
         c = NcQcConfig(self.fp)
         ncresults = c.run(self.fp)
-        c.save_to_netcdf(self.fp, ncresults)
+
+        c.save_to_netcdf(self.fp, ncresults, modify_source=True)
 
         with nc4.Dataset(self.fp) as ncd:
             assert 'data1' in ncd.variables
@@ -531,6 +536,87 @@ class TestRunNcConfig(unittest.TestCase):
                 qcv[:],
                 self.expected
             )
+
+    def test_running_save_nc_new_file_new_qc_variable(self):
+        c = NcQcConfig(self.fp)
+        ncresults = c.run(self.fp)
+
+        new_nc_handle, new_nc_path = tempfile.mkstemp(suffix='.nc', prefix='ioos_qc_tests_')
+        try:
+            c.save_to_netcdf(new_nc_path, ncresults, data_source=self.fp, modify_source=True)
+
+            with nc4.Dataset(self.fp) as ncd, nc4.Dataset(new_nc_path) as qcncd:
+                assert 'data1' in ncd.variables
+                assert 'data1_qartod_gross_range_test_000' in qcncd.variables
+
+                qcv = qcncd.variables['data1_qartod_gross_range_test_000']
+                datav = ncd.variables['data1']
+
+                assert datav.ancillary_variables == 'data1_qartod_gross_range_test_000'
+                assert datav.standard_name == 'air_temperature'
+                npt.assert_array_equal(
+                    datav[:],
+                    self.data
+                )
+
+                assert qcv.standard_name  == 'status_flag'
+                assert qcv.ioos_qc_module == 'qartod'
+                assert qcv.ioos_qc_test   == 'gross_range_test'
+                assert qcv.ioos_qc_target == 'data1'
+                assert qcv.ioos_qc_config == json.dumps(self.config)
+                npt.assert_array_equal(
+                    qcv[:],
+                    self.expected
+                )
+
+        finally:
+            os.close(new_nc_handle)
+            os.remove(new_nc_path)
+
+    def test_running_save_nc_new_file_existing_qc_variable(self):
+        c = NcQcConfig(self.fp)
+        ncresults = c.run(self.fp)
+
+        new_nc_handle, new_nc_path = tempfile.mkstemp(suffix='.nc', prefix='ioos_qc_tests_')
+        with nc4.Dataset(new_nc_path, 'w') as ncd:
+            ncd.createDimension('time', len(self.data))
+
+            qc1 = ncd.createVariable('qc1', 'b', ('time',))
+            qc1.setncattr('ioos_qc_config', json.dumps(self.config))
+            qc1.setncattr('ioos_qc_module', 'qartod')
+            qc1.setncattr('ioos_qc_test', 'gross_range_test')
+            qc1.setncattr('ioos_qc_target', 'data1')
+
+        try:
+            c.save_to_netcdf(new_nc_path, ncresults, data_source=self.fp, modify_source=True)
+
+            with nc4.Dataset(self.fp) as ncd, nc4.Dataset(new_nc_path) as qcncd:
+                assert 'data1' in ncd.variables
+                assert 'qc1' in qcncd.variables
+
+                qcv = qcncd.variables['qc1']
+                datav = ncd.variables['data1']
+
+                assert datav.ancillary_variables == 'qc1'
+                assert datav.standard_name == 'air_temperature'
+                npt.assert_array_equal(
+                    datav[:],
+                    self.data
+                )
+
+                assert qcv.standard_name  == 'status_flag'
+                assert qcv.ioos_qc_module == 'qartod'
+                assert qcv.ioos_qc_test   == 'gross_range_test'
+                assert qcv.ioos_qc_target == 'data1'
+                assert qcv.ioos_qc_config == json.dumps(self.config)
+                npt.assert_array_equal(
+                    qcv[:],
+                    self.expected
+                )
+
+        finally:
+            os.close(new_nc_handle)
+            os.remove(new_nc_path)
 
 
 class TestRunNcConfigClimatology(unittest.TestCase):
@@ -689,7 +775,7 @@ class TestRunNcConfigClimatology(unittest.TestCase):
             self.gross_expected
         )
 
-        qc.save_to_netcdf(self.fp, ncresults)
+        qc.save_to_netcdf(self.fp, ncresults, modify_source=True)
 
         with nc4.Dataset(self.fp) as ncd:
             assert 'data1' in ncd.variables
