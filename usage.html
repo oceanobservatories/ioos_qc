@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Usage &#8212; ioos_qc 0.1.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -38,9 +36,9 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>There are three main ways to use the <cite>ioos_qc</cite> project.</p>
 <ul class="simple">
-<li><a class="reference internal" href="#manual">Manual</a></li>
-<li><a class="reference internal" href="#qcconfig">QcConfig</a></li>
-<li><a class="reference internal" href="#ncqcconfig">NcQcConfig</a></li>
+<li><p><a class="reference internal" href="#manual">Manual</a></p></li>
+<li><p><a class="reference internal" href="#qcconfig">QcConfig</a></p></li>
+<li><p><a class="reference internal" href="#ncqcconfig">NcQcConfig</a></p></li>
 </ul>
 <div class="section" id="manual">
 <h2>Manual<a class="headerlink" href="#manual" title="Permalink to this headline">¶</a></h2>
@@ -50,8 +48,8 @@
 <p>A <cite>QcConfig</cite> object can be created and used to run checks against multiple streams of input data. To create a <cite>QcConfig</cite> object you may use a <cite>dict</cite> or a file system path in the form of a <cite>str</cite> or <cite>Path</cite> object.</p>
 <p>You can create an <cite>QcConfig</cite> object from the following:</p>
 <ul class="simple">
-<li>python <cite>dict</cite> or <cite>OrderedDict</cite></li>
-<li>JSON/YAML filepath (<cite>str</cite> or <cite>Path</cite> object)</li>
+<li><p>python <cite>dict</cite> or <cite>OrderedDict</cite></p></li>
+<li><p>JSON/YAML filepath (<cite>str</cite> or <cite>Path</cite> object)</p></li>
 </ul>
 <div class="section" id="creation">
 <h3>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h3>
@@ -144,8 +142,8 @@
 </pre></div>
 </td></tr></table></div>
 <ul class="simple">
-<li><cite>gross_range_test</cite> requires the parameter <cite>inp</cite>.</li>
-<li><cite>location_test</cite> requires the parameters <cite>lon</cite> and <cite>lat</cite>.</li>
+<li><p><cite>gross_range_test</cite> requires the parameter <cite>inp</cite>.</p></li>
+<li><p><cite>location_test</cite> requires the parameters <cite>lon</cite> and <cite>lat</cite>.</p></li>
 </ul>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -256,10 +254,10 @@ You can think of <cite>NcQcConfig</cite> objects as linking a series of <cite>Qc
 of input data.</p>
 <p>You can create an <cite>NcQcConfig</cite> object from the following:</p>
 <ul class="simple">
-<li>python <cite>dict</cite> or <cite>OrderedDict</cite></li>
-<li>JSON/YAML filepath (<cite>str</cite> or <cite>Path</cite> object)</li>
-<li><cite>netCDF4</cite> filepath (<cite>str</cite> or <cite>Path</cite> object)</li>
-<li><cite>netCDF4.Dataset</cite> object</li>
+<li><p>python <cite>dict</cite> or <cite>OrderedDict</cite></p></li>
+<li><p>JSON/YAML filepath (<cite>str</cite> or <cite>Path</cite> object)</p></li>
+<li><p><cite>netCDF4</cite> filepath (<cite>str</cite> or <cite>Path</cite> object)</p></li>
+<li><p><cite>netCDF4.Dataset</cite> object</p></li>
 </ul>
 <div class="section" id="id1">
 <h3>Creation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
@@ -544,6 +542,7 @@ object used to define and run the quality variables available in the file. This 
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">IOOS QARTOD Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Notebook Examples</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">ioos_qc</a></li>
@@ -559,13 +558,11 @@ object used to define and run the quality variables available in the file. This 
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -586,7 +583,7 @@ object used to define and run the quality variables available in the file. This 
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
