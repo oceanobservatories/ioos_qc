@@ -34,17 +34,30 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>At the command line:</p>
+<p>Install with conda:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install -c axiom-data-science ioos_qc
 </pre></div>
 </div>
 <div class="section" id="development-and-testing">
 <h2>Development and Testing<a class="headerlink" href="#development-and-testing" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>$ conda create -n ioosqc37 python=3.7
-$ conda activate ioosqc37
-$ conda install –file requirements.txt –file tests/requirements.txt</p>
-</div></blockquote>
+<p>Create a conda environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">ioosqc37</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.7</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">ioosqc37</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">file</span> <span class="n">tests</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Run tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
+</pre></div>
+</div>
+<p>Build docs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">ioosqc37</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">file</span> <span class="n">source</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>Then open a browser to <code class="docutils literal notranslate"><span class="pre">build/html/index.html</span></code>.</p>
 </div>
 </div>
 
@@ -122,7 +135,7 @@ $ conda install –file requirements.txt –file tests/requirements.txt</p>
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
