@@ -7,6 +7,7 @@
 ./_sources/api/modules.rst.txt
 ./_sources/examples.rst.txt
 ./_sources/examples/QartodTestExample_WaterLevel.ipynb.txt
+./_sources/examples/Qartod_Single_Test_Example.ipynb.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
 ./_sources/resources.rst.txt
@@ -30,6 +31,7 @@
 ./api/modules.html
 ./examples.html
 ./examples/QartodTestExample_WaterLevel.html
+./examples/Qartod_Single_Test_Example.html
 ./genindex.html
 ./index.html
 ./installation.html
