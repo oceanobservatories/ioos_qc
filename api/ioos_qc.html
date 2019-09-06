@@ -214,6 +214,7 @@ keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</p></li>
 <code class="sig-prename descclassname">ioos_qc.qartod.</code><code class="sig-name descname">flat_line_test</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">tinp</em>, <em class="sig-param">suspect_threshold</em>, <em class="sig-param">fail_threshold</em>, <em class="sig-param">tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check for consecutively repeated values within a tolerance.
 Missing and masked data is flagged as UNKNOWN.
+More information: <a class="reference external" href="https://github.com/axiom-data-science/ioos_qc/pull/11">https://github.com/axiom-data-science/ioos_qc/pull/11</a>
 :type inp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
 :param inp: Input data as a numeric numpy array or a list of numbers.
 :type tinp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]

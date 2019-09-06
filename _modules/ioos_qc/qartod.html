@@ -460,6 +460,7 @@
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Check for consecutively repeated values within a tolerance.</span>
 <span class="sd">    Missing and masked data is flagged as UNKNOWN.</span>
+<span class="sd">    More information: https://github.com/axiom-data-science/ioos_qc/pull/11</span>
 <span class="sd">    Args:</span>
 <span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
 <span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`, or seconds as type `int`.</span>
@@ -507,8 +508,9 @@
         <span class="n">count</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">test_threshold</span><span class="p">)</span> <span class="o">/</span> <span class="n">time_interval</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
         <span class="c1"># calculate actual data ranges for each window</span>
-        <span class="n">data_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">rolling_window</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">count</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">data_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">rolling_window</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">count</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">rolling_window</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="n">data_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">data_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">data_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data_max</span> <span class="o">-</span> <span class="n">data_min</span><span class="p">)</span>
 
         <span class="c1"># find data ranges that are within threshold and flag them</span>
