@@ -212,20 +212,26 @@ keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</p></li>
 <dl class="function">
 <dt id="ioos_qc.qartod.flat_line_test">
 <code class="sig-prename descclassname">ioos_qc.qartod.</code><code class="sig-name descname">flat_line_test</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">tinp</em>, <em class="sig-param">suspect_threshold</em>, <em class="sig-param">fail_threshold</em>, <em class="sig-param">tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check for consecutively repeated values within a tolerance.</p>
-<p>Missing and masked data is flagged as UNKNOWN.</p>
+<dd><p>Check for consecutively repeated values within a tolerance.
+Missing and masked data is flagged as UNKNOWN.
+:type inp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
+:param inp: Input data as a numeric numpy array or a list of numbers.
+:type tinp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
+:param tinp: Time data as a numpy array of dtype <cite>datetime64</cite>, or seconds as type <cite>int</cite>.
+:type suspect_threshold: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
+:param suspect_threshold: The number of seconds within <cite>tolerance</cite> to</p>
+<blockquote>
+<div><p>allow before being flagged as SUSPECT.</p>
+</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</p></li>
-<li><p><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</p></li>
-<li><p><strong>suspect_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number of seconds within <cite>tolerance</cite> to
-allow before being flagged as SUSPECT.</p></li>
 <li><p><strong>fail_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number of seconds within <cite>tolerance</cite> to
 allow before being flagged as FAIL.</p></li>
 <li><p><strong>tolerance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
-If the number consecutive values occurring that don’t cross over <cite>tolerance</cite>
-cross over either of the <cite>counts</cite> then the data will be flagged.</p></li>
+To determine if the current point <cite>n</cite> should be flagged, we use a rolling window, with endpoint at
+point <cite>n</cite>, and calculate the range of values in the window. If that range is less than <cite>tolerance</cite>,
+then the point is flagged.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
