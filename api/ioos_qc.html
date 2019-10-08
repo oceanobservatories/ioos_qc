@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="ioos_qc" href="modules.html" />
@@ -166,7 +167,7 @@ it does not monotonically increase</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</p></li>
-<li><p><strong>threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
+<li><p><strong>threshold</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple representing the minimum thresholds to use for SUSPECT
 and FAIL checks. The smaller of the two values is used in the SUSPECT
 tests and the greater of the two values is used in the FAIL tests.</p></li>
 <li><p><strong>check_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Either ‘std’ (default) or ‘range’, depending on the type of check
@@ -192,7 +193,7 @@ input data is flagged together.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>config</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClimatologyConfig</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>]]]) – A ClimatologyConfig object or a list of dicts containing tuples
+<li><p><strong>config</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClimatologyConfig</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]]]) – A ClimatologyConfig object or a list of dicts containing tuples
 that can be used to create a ClimatologyConfig object. Dict should be composed of
 keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</p></li>
 <li><p><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</p></li>
@@ -214,7 +215,7 @@ keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</p></li>
 <code class="sig-prename descclassname">ioos_qc.qartod.</code><code class="sig-name descname">flat_line_test</code><span class="sig-paren">(</span><em class="sig-param">inp</em>, <em class="sig-param">tinp</em>, <em class="sig-param">suspect_threshold</em>, <em class="sig-param">fail_threshold</em>, <em class="sig-param">tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#flat_line_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.flat_line_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check for consecutively repeated values within a tolerance.
 Missing and masked data is flagged as UNKNOWN.
-More information: <a class="reference external" href="https://github.com/axiom-data-science/ioos_qc/pull/11">https://github.com/axiom-data-science/ioos_qc/pull/11</a>
+More information: <a class="reference external" href="https://github.com/ioos/ioos_qc/pull/11">https://github.com/ioos/ioos_qc/pull/11</a>
 :type inp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
 :param inp: Input data as a numeric numpy array or a list of numbers.
 :type tinp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
@@ -255,8 +256,8 @@ defined range as SUSPECT. Missing and masked data is flagged as UNKNOWN.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</p></li>
-<li><p><strong>fail_span</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple range which to flag outside data as FAIL.</p></li>
-<li><p><strong>suspect_span</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</p></li>
+<li><p><strong>fail_span</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – 2-tuple range which to flag outside data as FAIL.</p></li>
+<li><p><strong>suspect_span</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]]) – 2-tuple range which to flag outside data as SUSPECT. [optional]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -282,7 +283,7 @@ flagged as UNKNOWN.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>lon</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Longitudes as a numeric numpy array or a list of numbers.</p></li>
 <li><p><strong>lat</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Latitudes as a numeric numpy array or a list of numbers.</p></li>
-<li><p><strong>bbox</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</p></li>
+<li><p><strong>bbox</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – A length 4 tuple expressed in (minx, miny, maxx, maxy) [optional].</p></li>
 <li><p><strong>range_max</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Maximum allowed range expressed in geodesic curve distance (meters).</p></li>
 </ul>
 </dd>
@@ -459,7 +460,7 @@ value. [optional]</p></li>
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=axiom-data-science&repo=ioos_qc&type=watch&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ioos&repo=ioos_qc&type=watch&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
