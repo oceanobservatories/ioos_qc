@@ -10,6 +10,7 @@
 ./_sources/examples/Qartod_Single_Test_Example.ipynb.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
+./_sources/other.rst.txt
 ./_sources/releases.rst.txt
 ./_sources/resources.rst.txt
 ./_sources/usage.rst.txt
@@ -37,6 +38,7 @@
 ./index.html
 ./installation.html
 ./objects.inv
+./other.html
 ./py-modindex.html
 ./releases.html
 ./resources.html
