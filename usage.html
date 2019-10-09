@@ -43,6 +43,24 @@
 </ul>
 <div class="section" id="manual">
 <h2>Manual<a class="headerlink" href="#manual" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Calling a test manually</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ioos_qc</span> <span class="kn">import</span> <span class="n">qartod</span>
+
+<span class="n">qartod</span><span class="o">.</span><span class="n">spike_test</span><span class="p">(</span>
+    <span class="n">inp</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">)),</span>
+    <span class="n">suspect_span</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+    <span class="n">fail_span</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
 </div>
 <div class="section" id="qcconfig">
 <h2>QcConfig<a class="headerlink" href="#qcconfig" title="Permalink to this headline">¶</a></h2>
@@ -54,8 +72,8 @@
 </ul>
 <div class="section" id="creation">
 <h3>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Use a dict to load the QcConfig</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Use a dict to load the QcConfig</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -80,8 +98,8 @@
 </pre></div>
 </td></tr></table></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">With <cite>str</cite> path</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">With <cite>str</cite> path</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -196,8 +214,8 @@
 <h3>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
 <p>The results of a <cite>QcConfig.run(…)</cite> is a python OrderedDict that has the same structure as the
 config object. The leaves (test parameters) are replaced by the results of each test.</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">Example results object</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Example results object</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -262,8 +280,8 @@ of input data.</p>
 </ul>
 <div class="section" id="id1">
 <h3>Creation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">Load a python dict</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Load a python dict</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -292,8 +310,8 @@ of input data.</p>
 </pre></div>
 </td></tr></table></div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text">Use a <cite>netCDF4.Dataset</cite> to load the NcQcConfig</span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Use a <cite>netCDF4.Dataset</cite> to load the NcQcConfig</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -391,8 +409,8 @@ It is only used to pull the data from each variable to pass into each test.</p>
 <h3>Results<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>The results of a <cite>NcQcConfig.run(…)</cite> is a python OrderedDict that has the same structure as the
 config object. The leaves (test parameters) are replaced by the results of each test.</p>
-<div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">Example results object</span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Example results object</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -446,8 +464,8 @@ config object. If existing variables matching the QC test are found it will upda
 new result data and config attributes.</p>
 <p>After saving a results object to a netCDF files, that file will be able to load the exact <cite>NcQcConfig</cite>
 object used to define and run the quality variables available in the file. This is very powerful!</p>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">Example save to netcdf and load config object again</span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Example save to netcdf and load config object again</span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -509,7 +527,7 @@ object used to define and run the quality variables available in the file. This 
 
 
 
-<p class="blurb">IOOS Quality Control tests implemented in Python</p>
+<p class="blurb">IOOS QARTOD and other Quality Control tests implemented in Python</p>
 
 
 
@@ -544,6 +562,7 @@ object used to define and run the quality variables available in the file. This 
 </li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">IOOS QARTOD Resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Notebook Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">IOOS QC Releases and Migration Guide</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">ioos_qc</a></li>

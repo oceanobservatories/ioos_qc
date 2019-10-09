@@ -10,6 +10,7 @@
 ./_sources/examples/Qartod_Single_Test_Example.ipynb.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
+./_sources/releases.rst.txt
 ./_sources/resources.rst.txt
 ./_sources/usage.rst.txt
 ./_static/alabaster.css
@@ -37,6 +38,7 @@
 ./installation.html
 ./objects.inv
 ./py-modindex.html
+./releases.html
 ./resources.html
 ./search.html
 ./searchindex.js

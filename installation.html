@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage" href="usage.html" />
-    <link rel="prev" title="Welcome to the IOOS QC documentation!" href="index.html" />
+    <link rel="prev" title="IOOS QC: QARTOD and other Quality Control tests implemented in Python" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -52,9 +52,13 @@
 </pre></div>
 </div>
 <p>Build docs:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
-<span class="n">conda</span> <span class="n">activate</span> <span class="n">ioosqc37</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">file</span> <span class="n">source</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span><span class="n">n</span> <span class="n">ioosqc37_docs</span> <span class="n">python</span><span class="o">=</span><span class="mf">3.7</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">ioosqc37_docs</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">file</span> <span class="n">tests</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">file</span> <span class="n">docs</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">file</span> <span class="n">docs</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">cd</span> <span class="n">docs</span>
 <span class="n">make</span> <span class="n">html</span>
 </pre></div>
 </div>
@@ -76,7 +80,7 @@ delete the <code class="docutils literal notranslate"><span class="pre">docs/sou
 
 
 
-<p class="blurb">IOOS Quality Control tests implemented in Python</p>
+<p class="blurb">IOOS QARTOD and other Quality Control tests implemented in Python</p>
 
 
 
@@ -99,6 +103,7 @@ delete the <code class="docutils literal notranslate"><span class="pre">docs/sou
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resources.html">IOOS QARTOD Resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Notebook Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">IOOS QC Releases and Migration Guide</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">ioos_qc</a></li>
@@ -108,7 +113,7 @@ delete the <code class="docutils literal notranslate"><span class="pre">docs/sou
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to the IOOS QC documentation!</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">IOOS QC: QARTOD and other Quality Control tests implemented in Python</a></li>
       <li>Next: <a href="usage.html" title="next chapter">Usage</a></li>
   </ul></li>
 </ul>
