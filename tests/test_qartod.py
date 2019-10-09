@@ -765,7 +765,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(0.5, 0.75),
+                suspect_threshold=0.5,
+                fail_threshold=0.75,
                 check_type='std'
             ),
             expected
@@ -777,7 +778,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(0, 5),
+                suspect_threshold=0,
+                fail_threshold=5,
                 check_type='std'
             ),
             expected
@@ -789,7 +791,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(8, 10),
+                suspect_threshold=8,
+                fail_threshold=10,
                 check_type='std'
             ),
             expected
@@ -801,21 +804,22 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(1000, 10000),
+                suspect_threshold=1000,
+                fail_threshold=10000,
                 check_type='std'
             ),
             expected
         )
 
     def test_attenuated_signal_range(self):
-
         # range less than 30
         signal = np.array([10, 20, 30, 40])
         expected = np.array([4, 4, 4, 4])
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(31, 50),
+                suspect_threshold=31,
+                fail_threshold=50,
                 check_type='range'
             ),
             expected
@@ -826,7 +830,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(0.1, 0.15),
+                suspect_threshold=0.1,
+                fail_threshold=0.15,
                 check_type='range'
             ),
             expected
@@ -838,7 +843,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(0.5, 0.75),
+                suspect_threshold=0.5,
+                fail_threshold=0.75,
                 check_type='std'
             ),
             expected
@@ -849,7 +855,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(0.5, 0.75),
+                suspect_threshold=0.5,
+                fail_threshold=0.75,
                 check_type='std'
             ),
             expected
@@ -861,7 +868,8 @@ class QartodAttenuatedSignalTest(unittest.TestCase):
         npt.assert_array_equal(
             qartod.attenuated_signal_test(
                 inp=signal,
-                threshold=(31, 50),
+                suspect_threshold=31,
+                fail_threshold=50,
                 check_type='range'
             ),
             expected
