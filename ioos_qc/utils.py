@@ -74,8 +74,8 @@ def dict_update(d, u):
     # http://stackoverflow.com/a/3233356
     import collections
     for k, v in u.items():
-        if isinstance(d, collections.Mapping):
-            if isinstance(v, collections.Mapping):
+        if isinstance(d, collections.abc.Mapping):
+            if isinstance(v, collections.abc.Mapping):
                 r = dict_update(d.get(k, {}), v)
                 d[k] = r
             else:
@@ -104,7 +104,7 @@ class GeoNumpyDateEncoder(geojson.GeoJSONEncoder):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         elif isinstance(obj, np.generic):
-            return np.asscalar(obj)
+            return obj.item()
         # elif isinstance(obj, pd.Timestamp):
         #     return obj.to_pydatetime().isoformat()
         elif isinstance(obj, (datetime, date)):
