@@ -92,15 +92,44 @@ it does not monotonically increase</p>
 <dt id="ioos_qc.qartod.ClimatologyConfig">
 <em class="property">class </em><code class="sig-prename descclassname">ioos_qc.qartod.</code><code class="sig-name descname">ClimatologyConfig</code><span class="sig-paren">(</span><em class="sig-param">members=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tspan</strong> – 2-tuple range.
+If period is defined, then this is a numeric range.
+If period is not defined, then its a date range.</p></li>
+<li><p><strong>vspan</strong> – 2-tuple range of valid values. This is passed in as the suspect_span to the gross_range test.</p></li>
+<li><p><strong>zspan</strong> – (optional) Vertical (depth) range, in meters positive down</p></li>
+<li><p><strong>period</strong> – <p>(optional) The unit the tspan argument is in. Defaults to datetime object
+but can also be any attribute supported by a pandas Timestamp object.
+See: <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html</a></p>
+<blockquote>
+<div><ul>
+<li><p>year</p></li>
+<li><p>week / weekofyear</p></li>
+<li><p>dayofyear</p></li>
+<li><p>dayofweek</p></li>
+<li><p>quarter</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="method">
 <dt id="ioos_qc.qartod.ClimatologyConfig.add">
-<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">tspan</em>, <em class="sig-param">vspan</em>, <em class="sig-param">zspan=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">tspan</em>, <em class="sig-param">vspan</em>, <em class="sig-param">zspan=None</em>, <em class="sig-param">period=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.add" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="method">
+<dt id="ioos_qc.qartod.ClimatologyConfig.convert">
+<em class="property">static </em><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.convert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="ioos_qc.qartod.ClimatologyConfig.mem">
@@ -116,7 +145,12 @@ it does not monotonically increase</p>
 <dl class="method">
 <dt id="ioos_qc.qartod.ClimatologyConfig.values">
 <code class="sig-name descname">values</code><span class="sig-paren">(</span><em class="sig-param">tind</em>, <em class="sig-param">zind=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ioos_qc/qartod.html#ClimatologyConfig.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ioos_qc.qartod.ClimatologyConfig.values" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tind</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>) – Value to test for inclusion between time bounds</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -194,11 +228,14 @@ input data is flagged together.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ioos_qc.qartod.ClimatologyConfig" title="ioos_qc.qartod.ClimatologyConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClimatologyConfig</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>]]]) – A ClimatologyConfig object or a list of dicts containing tuples
-that can be used to create a ClimatologyConfig object. Dict should be composed of
-keywords ‘tspan’ and ‘vspan’ as well as an optional ‘zspan’</p></li>
-<li><p><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</p></li>
+that can be used to create a ClimatologyConfig object. See ClimatologyConfig
+docs for more info.</p></li>
+<li><p><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a sequence of datetime objects compatible with pandas DatetimeIndex.
+This includes numpy datetime64, python datetime objects and pandas Timestamp object.
+ie. pd.DatetimeIndex([datetime.utcnow(), np.datetime64(), pd.Timestamp.now()]
+If anything else is passed in the format is assumed to be seconds since the unix epoch.</p></li>
 <li><p><strong>vinp</strong> – Input data as a numeric numpy array or a list of numbers.</p></li>
-<li><p><strong>zinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Z (depth) data as a numeric numpy array or a list of numbers.</p></li>
+<li><p><strong>zinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Z (depth) data, in meters positive down, as a numeric numpy array or a list of numbers.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -219,15 +256,17 @@ More information: <a class="reference external" href="https://github.com/ioos/io
 :type inp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
 :param inp: Input data as a numeric numpy array or a list of numbers.
 :type tinp: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]
-:param tinp: Time data as a numpy array of dtype <cite>datetime64</cite>, or seconds as type <cite>int</cite>.
-:type suspect_threshold: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>
-:param suspect_threshold: The number of seconds within <cite>tolerance</cite> to</p>
+:param tinp: Time data as a sequence of datetime objects compatible with pandas DatetimeIndex.</p>
 <blockquote>
-<div><p>allow before being flagged as SUSPECT.</p>
+<div><p>This includes numpy datetime64, python datetime objects and pandas Timestamp object.
+ie. pd.DatetimeIndex([datetime.utcnow(), np.datetime64(), pd.Timestamp.now()]
+If anything else is passed in the format is assumed to be seconds since the unix epoch.</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>suspect_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number of seconds within <cite>tolerance</cite> to
+allow before being flagged as SUSPECT.</p></li>
 <li><p><strong>fail_threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – The number of seconds within <cite>tolerance</cite> to
 allow before being flagged as FAIL.</p></li>
 <li><p><strong>tolerance</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>) – The tolerance that should be exceeded between consecutive values.
@@ -331,7 +370,10 @@ Missing and masked data is flagged as UNKNOWN.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Input data as a numeric numpy array or a list of numbers.</p></li>
-<li><p><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a numpy array of dtype <cite>datetime64</cite>.</p></li>
+<li><p><strong>tinp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code>]) – Time data as a sequence of datetime objects compatible with pandas DatetimeIndex.
+This includes numpy datetime64, python datetime objects and pandas Timestamp object.
+ie. pd.DatetimeIndex([datetime.utcnow(), np.datetime64(), pd.Timestamp.now()]
+If anything else is passed in the format is assumed to be seconds since the unix epoch.</p></li>
 <li><p><strong>threshold</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – A float value representing a rate of change over time,
 in observation units per second.</p></li>
 </ul>
@@ -527,7 +569,7 @@ value. [optional]</p></li>
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

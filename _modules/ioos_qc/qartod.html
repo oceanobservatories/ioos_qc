@@ -37,10 +37,11 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Real</span> <span class="k">as</span> <span class="n">N</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">pygc</span> <span class="k">import</span> <span class="n">great_distance</span>
 
 <span class="kn">from</span> <span class="nn">ioos_qc.utils</span> <span class="k">import</span> <span class="p">(</span>
@@ -63,19 +64,21 @@
 
 <span class="n">FLAGS</span> <span class="o">=</span> <span class="n">QartodFlags</span>  <span class="c1"># Default name for all check modules</span>
 
-
-<span class="n">N</span> <span class="o">=</span> <span class="n">Real</span>
 <span class="n">span</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Span&#39;</span><span class="p">,</span> <span class="s1">&#39;minv maxv&#39;</span><span class="p">)</span>
 
 
-<span class="c1"># Convert dates to datetime and leave datetimes alone. This is also reducing all</span>
-<span class="c1"># objects to second precision</span>
 <div class="viewcode-block" id="mapdates"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.mapdates">[docs]</a><span class="k">def</span> <span class="nf">mapdates</span><span class="p">(</span><span class="n">dates</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="s1">&#39;dtype&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">dates</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">):</span>
+        <span class="c1"># numpy datetime objects</span>
         <span class="k">return</span> <span class="n">dates</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[ns]&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;datetime64[ns]&#39;</span><span class="p">)</span></div>
-
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Finally try unix epoch seconds</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[ns]&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># strings work here but we don&#39;t advertise that</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;datetime64[ns]&#39;</span><span class="p">)</span></div>
+            
 
 <div class="viewcode-block" id="qartod_compare"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.qartod_compare">[docs]</a><span class="k">def</span> <span class="nf">qartod_compare</span><span class="p">(</span><span class="n">vectors</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">]]</span>
                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
@@ -240,11 +243,27 @@
 
 
 <div class="viewcode-block" id="ClimatologyConfig"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.ClimatologyConfig">[docs]</a><span class="k">class</span> <span class="nc">ClimatologyConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        tspan: 2-tuple range.</span>
+<span class="sd">                If period is defined, then this is a numeric range.</span>
+<span class="sd">                If period is not defined, then its a date range.</span>
+<span class="sd">        vspan: 2-tuple range of valid values. This is passed in as the suspect_span to the gross_range test.</span>
+<span class="sd">        zspan: (optional) Vertical (depth) range, in meters positive down</span>
+<span class="sd">        period: (optional) The unit the tspan argument is in. Defaults to datetime object</span>
+<span class="sd">                but can also be any attribute supported by a pandas Timestamp object.</span>
+<span class="sd">                See: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html                    </span>
+<span class="sd">                    * year</span>
+<span class="sd">                    * week / weekofyear</span>
+<span class="sd">                    * dayofyear</span>
+<span class="sd">                    * dayofweek</span>
+<span class="sd">                    * quarter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mem</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;window&#39;</span><span class="p">,</span> <span class="p">[</span>
         <span class="s1">&#39;tspan&#39;</span><span class="p">,</span>
         <span class="s1">&#39;vspan&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;zspan&#39;</span>
+        <span class="s1">&#39;zspan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;period&#39;</span>
     <span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -255,9 +274,20 @@
     <span class="k">def</span> <span class="nf">members</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_members</span>
 
-<div class="viewcode-block" id="ClimatologyConfig.values"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.ClimatologyConfig.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tind</span><span class="p">,</span> <span class="n">zind</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ClimatologyConfig.values"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.ClimatologyConfig.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tind</span> <span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span> <span class="n">zind</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            tind: Value to test for inclusion between time bounds</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">span</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_members</span><span class="p">:</span>
+
+            <span class="c1"># If a period is defined, extract the attribute from the</span>
+            <span class="c1"># pd.Timestamp object before comparison. The min and max</span>
+            <span class="c1"># values are in this period unit already.</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">tind</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tind</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+
             <span class="c1"># If we are between times</span>
             <span class="k">if</span> <span class="n">tind</span> <span class="o">&gt;</span> <span class="n">m</span><span class="o">.</span><span class="n">tspan</span><span class="o">.</span><span class="n">minv</span> <span class="ow">and</span> <span class="n">tind</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="o">.</span><span class="n">tspan</span><span class="o">.</span><span class="n">maxv</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">isnan</span><span class="p">(</span><span class="n">zind</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">isnan</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">zspan</span><span class="p">):</span>
@@ -271,11 +301,20 @@
 <div class="viewcode-block" id="ClimatologyConfig.add"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.ClimatologyConfig.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">tspan</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">],</span>
             <span class="n">vspan</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">],</span>
-            <span class="n">zspan</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">zspan</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">period</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">tspan</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">tspan</span> <span class="o">=</span> <span class="n">mapdates</span><span class="p">(</span><span class="n">tspan</span><span class="p">)</span>
-        <span class="n">tspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">tspan</span><span class="p">))</span>
+        <span class="c1"># If period is defined, tspan is a numeric</span>
+        <span class="c1"># if it isn&#39;t defined, its a parsable date</span>
+        <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">tspan</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">([</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">tspan</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">tspan</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="p">]))</span>
 
         <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">vspan</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">vspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">vspan</span><span class="p">))</span>
@@ -284,13 +323,32 @@
             <span class="k">assert</span> <span class="n">isfixedlength</span><span class="p">(</span><span class="n">zspan</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">zspan</span> <span class="o">=</span> <span class="n">span</span><span class="p">(</span><span class="o">*</span><span class="nb">sorted</span><span class="p">(</span><span class="n">zspan</span><span class="p">))</span>
 
+        <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Test to make sure this is callable on a Timestamp</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">period</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The period &quot;</span><span class="si">{period}</span><span class="s1">&quot; is not recognized&#39;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">(</span>
                 <span class="n">tspan</span><span class="p">,</span>
                 <span class="n">vspan</span><span class="p">,</span>
-                <span class="n">zspan</span>
+                <span class="n">zspan</span><span class="p">,</span>
+                <span class="n">period</span>
             <span class="p">)</span>
-        <span class="p">)</span></div></div>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ClimatologyConfig.convert"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.ClimatologyConfig.convert">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+        <span class="c1"># Create a ClimatologyConfig object if one was not passed in</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ClimatologyConfig</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">config</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="n">ClimatologyConfig</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">climate_config_dict</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">**</span><span class="n">climate_config_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span></div></div>
 
 
 <div class="viewcode-block" id="climatology_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.climatology_test">[docs]</a><span class="k">def</span> <span class="nf">climatology_test</span><span class="p">(</span><span class="n">config</span> <span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ClimatologyConfig</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]]],</span>
@@ -304,22 +362,21 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        config: A ClimatologyConfig object or a list of dicts containing tuples</span>
-<span class="sd">            that can be used to create a ClimatologyConfig object. Dict should be composed of</span>
-<span class="sd">            keywords &#39;tspan&#39; and &#39;vspan&#39; as well as an optional &#39;zspan&#39;</span>
-<span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`.</span>
+<span class="sd">            that can be used to create a ClimatologyConfig object. See ClimatologyConfig</span>
+<span class="sd">            docs for more info.</span>
+<span class="sd">        tinp: Time data as a sequence of datetime objects compatible with pandas DatetimeIndex.</span>
+<span class="sd">          This includes numpy datetime64, python datetime objects and pandas Timestamp object.</span>
+<span class="sd">          ie. pd.DatetimeIndex([datetime.utcnow(), np.datetime64(), pd.Timestamp.now()]</span>
+<span class="sd">          If anything else is passed in the format is assumed to be seconds since the unix epoch.</span>
 <span class="sd">        vinp: Input data as a numeric numpy array or a list of numbers.</span>
-<span class="sd">        zinp: Z (depth) data as a numeric numpy array or a list of numbers.</span>
+<span class="sd">        zinp: Z (depth) data, in meters positive down, as a numeric numpy array or a list of numbers.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A masked array of flag values equal in size to that of the input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Create a ClimatologyConfig object if one was not passed in</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ClimatologyConfig</span><span class="p">):</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">ClimatologyConfig</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">climate_config_dict</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="n">c</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">**</span><span class="n">climate_config_dict</span><span class="p">)</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ClimatologyConfig</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
     <span class="n">tinp</span> <span class="o">=</span> <span class="n">mapdates</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -330,7 +387,10 @@
     <span class="c1"># Save original shape</span>
     <span class="n">original_shape</span> <span class="o">=</span> <span class="n">inp</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">tinp</span> <span class="o">=</span> <span class="n">tinp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="c1"># We compare using a pandas Timestamp for helper functions like</span>
+    <span class="c1"># &#39;week&#39; and &#39;dayofyear&#39;. It is surprisingly hard to pull these out</span>
+    <span class="c1"># of a plain datetime64 object.</span>
+    <span class="n">tinp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">tinp</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
     <span class="n">inp</span> <span class="o">=</span> <span class="n">inp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">zinp</span> <span class="o">=</span> <span class="n">zinp</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
@@ -343,7 +403,8 @@
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">tind</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">zind</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tinp</span><span class="p">,</span> <span class="n">inp</span><span class="p">,</span> <span class="n">zinp</span><span class="p">)):</span>
         <span class="n">minv</span><span class="p">,</span> <span class="n">maxv</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="n">tind</span><span class="p">,</span> <span class="n">zind</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">minv</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">maxv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">flag_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
+            <span class="c1"># Data point is outside the time/depth</span>
+            <span class="n">flag_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">UNKNOWN</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Flag suspect outside of climatology span</span>
             <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
@@ -422,9 +483,12 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
-<span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`.</span>
+<span class="sd">        tinp: Time data as a sequence of datetime objects compatible with pandas DatetimeIndex.</span>
+<span class="sd">              This includes numpy datetime64, python datetime objects and pandas Timestamp object.</span>
+<span class="sd">              ie. pd.DatetimeIndex([datetime.utcnow(), np.datetime64(), pd.Timestamp.now()]</span>
+<span class="sd">              If anything else is passed in the format is assumed to be seconds since the unix epoch.</span>
 <span class="sd">        threshold: A float value representing a rate of change over time,</span>
-<span class="sd">                 in observation units per second.</span>
+<span class="sd">                   in observation units per second.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A masked array of flag values equal in size to that of the input.</span>
@@ -442,7 +506,9 @@
 
     <span class="c1"># calculate rate of change in units/second</span>
     <span class="n">roc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">inp</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
-    <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
+
+    <span class="n">tinp</span> <span class="o">=</span> <span class="n">mapdates</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">inp</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;timedelta64[s]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span>
 
     <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
         <span class="n">flag_arr</span><span class="p">[</span><span class="n">roc</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">SUSPECT</span>
@@ -464,7 +530,10 @@
 <span class="sd">    More information: https://github.com/ioos/ioos_qc/pull/11</span>
 <span class="sd">    Args:</span>
 <span class="sd">        inp: Input data as a numeric numpy array or a list of numbers.</span>
-<span class="sd">        tinp: Time data as a numpy array of dtype `datetime64`, or seconds as type `int`.</span>
+<span class="sd">        tinp: Time data as a sequence of datetime objects compatible with pandas DatetimeIndex.</span>
+<span class="sd">              This includes numpy datetime64, python datetime objects and pandas Timestamp object.</span>
+<span class="sd">              ie. pd.DatetimeIndex([datetime.utcnow(), np.datetime64(), pd.Timestamp.now()]</span>
+<span class="sd">              If anything else is passed in the format is assumed to be seconds since the unix epoch.</span>
 <span class="sd">        suspect_threshold: The number of seconds within `tolerance` to</span>
 <span class="sd">            allow before being flagged as SUSPECT.</span>
 <span class="sd">        fail_threshold: The number of seconds within `tolerance` to</span>
@@ -494,7 +563,10 @@
         <span class="k">return</span> <span class="n">flag_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span>
 
     <span class="c1"># determine median time interval</span>
-    <span class="n">time_interval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tinp</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">tinp</span> <span class="o">=</span> <span class="n">mapdates</span><span class="p">(</span><span class="n">tinp</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># The thresholds are in seconds so we round make sure the interval is also in seconds</span>
+    <span class="n">time_interval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tinp</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;timedelta64[s]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">rolling_window</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -531,6 +603,7 @@
     <span class="n">flag_arr</span><span class="p">[</span><span class="n">inp</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">QartodFlags</span><span class="o">.</span><span class="n">MISSING</span>
 
     <span class="k">return</span> <span class="n">flag_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="attenuated_signal_test"><a class="viewcode-back" href="../../api/ioos_qc.html#ioos_qc.qartod.attenuated_signal_test">[docs]</a><span class="k">def</span> <span class="nf">attenuated_signal_test</span><span class="p">(</span><span class="n">inp</span> <span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">N</span><span class="p">],</span>
                            <span class="n">threshold</span> <span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">],</span>
@@ -658,7 +731,7 @@
       &copy;2017, IOOS.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
