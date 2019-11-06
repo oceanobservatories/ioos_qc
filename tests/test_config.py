@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 # coding=utf-8
+import logging
 import os
-import simplejson as json
-import unittest
 import tempfile
-from pathlib import Path
+import unittest
 from copy import deepcopy
+from pathlib import Path
 
-import numpy as np
 import netCDF4 as nc4
+import numpy as np
 import numpy.testing as npt
-
+import simplejson as json
 from ruamel import yaml
 
 from ioos_qc.config import QcConfig, NcQcConfig
 from ioos_qc.qartod import ClimatologyConfig
 from ioos_qc.utils import GeoNumpyDateEncoder
 
-import logging
 L = logging.getLogger('ioos_qc')
 L.setLevel(logging.INFO)
 L.addHandler(logging.StreamHandler())
@@ -94,6 +93,30 @@ class ConfigRunTest(unittest.TestCase):
             r['qartod']['gross_range_test'],
             expected
         )
+
+    def test_run_with_agg(self):
+        qc = QcConfig({'qartod': {
+            'gross_range_test': {
+                'fail_span': [0, 12],
+            },
+            'spike_test': {
+                'suspect_threshold': 3,
+                'fail_threshold': 10,
+            }
+        }})
+        inp = [-1, 0, 1, 2, 10, 3]
+        expected_gross_range = np.array([4, 1, 1, 1, 1, 1])
+        expected_spike = np.array([1, 1, 1, 3, 3, 1])
+        expected_agg = np.array([4, 1, 1, 3, 3, 1])
+
+        r = qc.run(
+            gen_agg=True,
+            inp=inp
+        )
+
+        npt.assert_array_equal(r['qartod']['gross_range_test'], expected_gross_range)
+        npt.assert_array_equal(r['qartod']['spike_test'], expected_spike)
+        npt.assert_array_equal(r['qartod']['aggregate_flag'], expected_agg)
 
     def test_different_kwargs_run(self):
 
@@ -263,6 +286,7 @@ class ClimatologyConfigConversionTest(unittest.TestCase):
 
 
 class TestReadNcConfig(unittest.TestCase):
+    # TODO: need to test run with gen_agg here
 
     def setUp(self):
         self.fh, self.fp = tempfile.mkstemp(suffix='.nc', prefix='ioos_qc_tests_')
@@ -416,15 +440,17 @@ class TestRunNcConfig(unittest.TestCase):
 
     def test_running_save_nc(self):
         c = NcQcConfig(self.fp)
-        ncresults = c.run(self.fp)
+        ncresults = c.run(self.fp, gen_agg=True)
         c.save_to_netcdf(self.fp, ncresults)
 
         with nc4.Dataset(self.fp) as ncd:
             assert 'data1' in ncd.variables
             assert 'qc1' in ncd.variables
+            assert 'aggregate_flag' in ncd.variables
 
             qcv = ncd.variables['qc1']
             datav = ncd.variables['data1']
+            agg = ncd.variables['aggregate_flag']
 
             assert datav.ancillary_variables == 'qc1'
             assert datav.standard_name == 'air_temperature'
@@ -440,6 +466,16 @@ class TestRunNcConfig(unittest.TestCase):
             assert qcv.ioos_qc_config == json.dumps(self.config)
             npt.assert_array_equal(
                 qcv[:],
+                self.expected
+            )
+
+            assert agg.standard_name  == 'status_flag qartod_agg_flag'
+            assert agg.ioos_qc_module == 'qartod'
+            assert agg.ioos_qc_test   == 'qartod_compare'
+            assert agg.ioos_qc_target == 'data1'
+            # only one test, so agg is the same as gross_range results
+            npt.assert_array_equal(
+                agg[:],
                 self.expected
             )
 
